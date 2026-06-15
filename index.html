@@ -335,23 +335,25 @@ function getVH(){return window.visualViewport?window.visualViewport.height:windo
 const SCREEN_H={intro:700,select:600,game:542};
 function getContentH(){if(currentScreen==='game')return SCREEN_H.game;if(currentScreen==='select'){const el=document.getElementById('selScreen');const h=el?el.offsetHeight:0;return h>200?h:SCREEN_H.select;}return SCREEN_H.intro;}
 function resizeGame(){
- const vw=getVW(), vh=getVH();
- const wrap=document.getElementById('scaleWrap');
- if(currentScreen!=='game' && vw<1024){
-   document.body.classList.add('mobileUI');
-   document.documentElement.style.overflow='auto';document.body.style.overflow='auto';
-   wrap.style.transform='none';wrap.style.left='0px';wrap.style.top='0px';
-   return;
- }
- document.body.classList.remove('mobileUI');
- document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';
- const gW=1100, gH=getContentH();
- const scale=Math.min(vw/gW, vh/gH);
- const sW=gW*scale, sH=gH*scale;
- const lo=Math.max(0,(vw-sW)/2);
- let to=Math.max(0,(vh-sH)/2);
- if(vh>vw && currentScreen==='game'){ to=Math.max(10, vh*0.05); }
- wrap.style.transform=`scale(${scale})`;wrap.style.left=lo+'px';wrap.style.top=to+'px';
+const vw=getVW(), vh=getVH();
+const wrap=document.getElementById('scaleWrap');
+if(currentScreen!=='game' && vw<1024){
+  document.body.classList.add('mobileUI');
+  document.body.classList.remove('gameActive');
+  document.documentElement.style.overflow='auto';document.body.style.overflow='auto';
+  wrap.style.transform='none';wrap.style.left='0px';wrap.style.top='0px';
+  return;
+}
+document.body.classList.remove('mobileUI');
+document.body.classList.add('gameActive');
+document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';
+const gW=1100, gH=getContentH();
+const scale=Math.min(vw/gW, vh/gH);
+const sW=gW*scale, sH=gH*scale;
+const lo=Math.max(0,(vw-sW)/2);
+let to=Math.max(0,(vh-sH)/2);
+if(vh>vw && currentScreen==='game'){ to=Math.max(10, vh*0.05); }
+wrap.style.transform=`scale(${scale})`;wrap.style.left=lo+'px';wrap.style.top=to+'px';
 }
 window.addEventListener('resize',resizeGame);
 window.addEventListener('orientationchange',()=>setTimeout(resizeGame,250));
