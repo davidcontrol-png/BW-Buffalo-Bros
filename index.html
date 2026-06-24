@@ -58,7 +58,7 @@ body{background:#0a0000;width:100vw;height:100vh;height:100dvh;font-family:'Oswa
 .c-stat{color:#FF6B00;font-size:11px;display:block;margin-top:4px}
 .c-desc{color:rgba(255,255,255,.45);font-size:9px;display:block;margin-top:2px}
 .pips{display:flex;align-items:center;gap:2px;justify-content:center;margin-top:4px}
-.pips label{color:rgba(255,255,255,.42);font-size:8px;width:26px;text-align:right;margin-right:3px} .gender-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:14px} .gender-lbl{color:rgba(255,255,255,.55);font-size:11px;letter-spacing:2px} .gender-btn{background:rgba(255,107,0,.06);border:1.5px solid rgba(255,107,0,.28);color:rgba(255,255,255,.6);font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;padding:9px 18px;border-radius:9px;cursor:pointer;transition:all .18s} .gender-btn.active{border-color:#FF6B00;background:rgba(255,107,0,.18);color:#fff;box-shadow:0 0 14px rgba(255,107,0,.25)}
+let SEL_GENDER='M';
 .pip{width:13px;height:4px;border-radius:2px}
 .sel-footer{display:flex;align-items:center;gap:16px;padding-top:12px;border-top:1px solid rgba(255,107,0,.16)}
 .play-btn{flex:1;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;border:none;padding:16px 0;font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:5px;cursor:pointer;border-radius:10px;transition:all .2s;box-shadow:0 6px 16px rgba(255,107,0,.4)}
@@ -512,7 +512,7 @@ const CHARS=[
 {id:'chunks',name:'CLUB CHUNKS',flag:'🍖',j:'#f1c40f',sh:'#1a1a1a',st:'#e74c3c',sk:'#d4a76a',hr:'#2c1810',stat:'🛡 +1 Vida extra',spd:4.0,jp:14.5,wm:1,extraLife:true,pips:[[3,'VEL'],[3,'SALT'],[5,'POD']]},
 {id:'picante',name:'PICANTE CF',flag:'🌶️',j:'#e74c3c',sh:'#1a1a1a',st:'#f1c40f',sk:'#c8906a',hr:'#1a0a00',stat:'🌶️ +30% Ínsula',spd:5.2,jp:15.0,wm:1,startInsula:30,pips:[[5,'VEL'],[4,'SALT'],[3,'POD']]}
 ];
-.pips label{color:rgba(255,255,255,.42);font-size:8px;width:26px;text-align:right;margin-right:3px} .gender-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:14px} .gender-lbl{color:rgba(255,255,255,.55);font-size:11px;letter-spacing:2px} .gender-btn{background:rgba(255,107,0,.06);border:1.5px solid rgba(255,107,0,.28);color:rgba(255,255,255,.6);font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;padding:9px 18px;border-radius:9px;cursor:pointer;transition:all .18s} .gender-btn.active{border-color:#FF6B00;background:rgba(255,107,0,.18);color:#fff;box-shadow:0 0 14px rgba(255,107,0,.25)}
+let SEL_GENDER='M';
 
 /* ===== RANKING GLOBAL (lee de la API /api/score) ===== */
 let SEL_GENDER='M'; const TEAM_FLAG={};CHARS.forEach(c=>TEAM_FLAG[c.name]=c.flag);
