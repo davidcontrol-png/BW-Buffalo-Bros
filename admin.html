@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Bebas+Neue&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Oswald',sans-serif;background:radial-gradient(circle at 50% 0%,#2a0606,#0a0000);min-height:100vh;color:#fff;padding:16px}
-.wrap{max-width:1000px;margin:0 auto}
+.wrap{max-width:1200px;margin:0 auto}
 .head{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#7B1A1A,#a02020);padding:16px 18px;border-radius:14px;margin-bottom:18px}
 .head img{width:46px;height:46px;border-radius:8px;border:2px solid rgba(255,255,255,.3)}
 .head h1{font-family:'Bebas Neue';font-size:26px;letter-spacing:2px;line-height:1}
@@ -19,26 +19,37 @@ body{font-family:'Oswald',sans-serif;background:radial-gradient(circle at 50% 0%
 button{cursor:pointer;border:none;font-family:'Bebas Neue';letter-spacing:2px;color:#fff;border-radius:10px}
 .btn-main{width:100%;margin-top:14px;padding:14px;font-size:20px;background:linear-gradient(135deg,#FF6B00,#c84d00)}
 .panel{display:none}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
 .stat{background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.28);border-radius:12px;padding:14px 8px;text-align:center}
-.stat b{display:block;font-family:'Bebas Neue';font-size:30px;color:#FF6B00;line-height:1}
+.stat b{display:block;font-family:'Bebas Neue';font-size:28px;color:#FF6B00;line-height:1}
 .stat span{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px}
-.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
-.tools button{flex:1;min-width:150px;padding:13px;font-size:16px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.tools button{flex:1;min-width:140px;padding:12px;font-size:15px}
 .b-csv{background:linear-gradient(135deg,#1e8449,#27ae60)}
 .b-emails{background:linear-gradient(135deg,#2471a3,#3498db)}
 .b-refresh{background:rgba(255,255,255,.1)}
-.b-logout{background:rgba(255,255,255,.07);flex:0 0 auto;min-width:auto;padding:13px 16px}
+.b-wipe{background:linear-gradient(135deg,#7B1A1A,#c0392b)}
+.b-logout{background:rgba(255,255,255,.07);flex:0 0 auto;min-width:auto;padding:12px 16px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.filters select,.filters input{background:rgba(0,0,0,.5);color:#fff;border:1px solid rgba(255,107,0,.3);border-radius:8px;padding:8px 12px;font-family:Oswald;font-size:13px}
 .tablewrap{background:rgba(0,0,0,.3);border:1px solid rgba(255,107,0,.2);border-radius:12px;overflow:auto;max-height:60vh}
-table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
-th{background:#7B1A1A;color:#fff;padding:10px 12px;text-align:left;position:sticky;top:0;font-weight:600;letter-spacing:1px}
-td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.06)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap}
+th{background:#7B1A1A;color:#fff;padding:10px 10px;text-align:left;position:sticky;top:0;font-weight:600;letter-spacing:1px;font-size:11px}
+td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
 tr:hover td{background:rgba(255,107,0,.06)}
 .tag{padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
 .tag.si{background:rgba(46,204,113,.2);color:#2ecc71}
 .tag.no{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
+.tag.qr{background:rgba(52,152,219,.2);color:#5dade2}
+.tag.rk{background:rgba(241,196,15,.2);color:#f1c40f}
+.g-m{color:#5cd9ff;font-weight:700}
+.g-f{color:#ff80c0;font-weight:700}
 .empty{text-align:center;padding:40px;color:rgba(255,255,255,.4)}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.act{display:inline-flex;gap:4px}
+.act button{padding:4px 8px;font-size:11px;letter-spacing:.5px;border-radius:5px;font-family:Oswald;font-weight:600}
+.act .b-redeem{background:rgba(46,204,113,.2);color:#2ecc71;border:1px solid rgba(46,204,113,.4)}
+.act .b-del{background:rgba(231,76,60,.15);color:#ff6b6b;border:1px solid rgba(231,76,60,.4)}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.tools button{min-width:auto}}
 </style></head><body>
 <div class="wrap">
   <div class="head">
@@ -46,7 +57,6 @@ tr:hover td{background:rgba(255,107,0,.06)}
     <div><h1>BUFFALO WINGS® · ADMIN</h1><p>BASE DE DATOS · SOCAZONE 2026</p></div>
   </div>
 
-  <!-- LOGIN -->
   <div class="login" id="login">
     <h2>🔒 ACCESO ADMINISTRADOR</h2>
     <input id="key" type="password" placeholder="CLAVE" autocomplete="off">
@@ -54,7 +64,6 @@ tr:hover td{background:rgba(255,107,0,.06)}
     <button class="btn-main" id="enter">▶ INGRESAR</button>
   </div>
 
-  <!-- PANEL -->
   <div class="panel" id="panel">
     <div class="stats">
       <div class="stat"><b id="stTotal">0</b><span>REGISTROS</span></div>
@@ -62,11 +71,25 @@ tr:hover td{background:rgba(255,107,0,.06)}
       <div class="stat"><b id="stRedeemed">0</b><span>CANJEADOS</span></div>
       <div class="stat"><b id="stPend">0</b><span>PENDIENTES</span></div>
     </div>
+    <div class="stats">
+      <div class="stat" style="border-color:rgba(255,107,0,.5)"><b id="stAlitas" style="color:#FF6B00">0</b><span>🍗 ALITAS FC</span></div>
+      <div class="stat" style="border-color:rgba(241,196,15,.5)"><b id="stChunks" style="color:#f1c40f">0</b><span>🍖 CLUB CHUNKS</span></div>
+      <div class="stat" style="border-color:rgba(231,76,60,.5)"><b id="stPicante" style="color:#e74c3c">0</b><span>🌶️ PICANTE CF</span></div>
+      <div class="stat" style="border-color:rgba(255,128,192,.5)"><b id="stFem" style="color:#ff80c0">0</b><span>♀ MUJERES</span></div>
+    </div>
     <div class="tools">
-      <button class="b-csv" id="dlCsv">📥 DESCARGAR CSV COMPLETO</button>
+      <button class="b-csv" id="dlCsv">📥 CSV COMPLETO</button>
       <button class="b-emails" id="dlEmails">📧 SOLO EMAILS</button>
       <button class="b-refresh" id="refresh">🔄 ACTUALIZAR</button>
+      <button class="b-wipe" id="wipeAll">🧹 BORRAR TODO</button>
       <button class="b-logout" id="logout">SALIR</button>
+    </div>
+    <div class="filters">
+      <select id="fTeam"><option value="">Todos los equipos</option><option>ALITAS FC</option><option>CLUB CHUNKS</option><option>PICANTE CF</option></select>
+      <select id="fGender"><option value="">Todos</option><option value="M">♂ Hombre</option><option value="F">♀ Mujer</option></select>
+      <select id="fRedeem"><option value="">Canje: todos</option><option value="si">Canjeados</option><option value="no">Pendientes</option></select>
+      <select id="fMode"><option value="">Modo: todos</option><option value="qr">📷 QR</option><option value="rank">🏆 Ranking</option></select>
+      <input id="fSearch" placeholder="🔍 Buscar apodo/email">
     </div>
     <div class="tablewrap" id="tablewrap"></div>
   </div>
@@ -74,6 +97,8 @@ tr:hover td{background:rgba(255,107,0,.06)}
 <script>
 const $=id=>document.getElementById(id);
 let KEY=sessionStorage.getItem('bw_admin_key')||'';
+let DATA=null;
+const TEAM_F={'ALITAS FC':'🍗','CLUB CHUNKS':'🍖','PICANTE CF':'🌶️'};
 
 async function loadData(){
   $('tablewrap').innerHTML='<div class="empty">⏳ Cargando…</div>';
@@ -81,27 +106,78 @@ async function loadData(){
     const r=await fetch('/api/export?format=json&key='+encodeURIComponent(KEY));
     if(r.status===401){ logout('Clave incorrecta'); return; }
     if(!r.ok) throw new Error('HTTP '+r.status);
-    const d=await r.json();
-    showPanel(d);
-  }catch(e){ $('tablewrap').innerHTML='<div class="empty">⚠️ Error al cargar: '+e.message+'</div>'; }
+    DATA=await r.json();
+    showPanel();
+  }catch(e){ $('tablewrap').innerHTML='<div class="empty">⚠️ Error: '+e.message+'</div>'; }
 }
 
-function showPanel(d){
+function showPanel(){
   $('login').style.display='none';
   $('panel').style.display='block';
-  $('stTotal').textContent=d.total;
-  $('stEmails').textContent=d.uniqueEmails;
-  $('stRedeemed').textContent=d.redeemed;
-  $('stPend').textContent=d.total-d.redeemed;
+  $('stTotal').textContent=DATA.total;
+  $('stEmails').textContent=DATA.uniqueEmails;
+  $('stRedeemed').textContent=DATA.redeemed;
+  $('stPend').textContent=DATA.total-DATA.redeemed;
+  const bt=DATA.byTeam||{};
+  $('stAlitas').textContent=bt['ALITAS FC']||0;
+  $('stChunks').textContent=bt['CLUB CHUNKS']||0;
+  $('stPicante').textContent=bt['PICANTE CF']||0;
+  $('stFem').textContent=(DATA.byGender&&DATA.byGender.F)||0;
+  renderTable();
+}
+
+function renderTable(){
   const esc=s=>(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-  if(!d.records.length){ $('tablewrap').innerHTML='<div class="empty">Aún no hay registros. 🦬</div>'; return; }
-  let html='<table><thead><tr><th>Fecha</th><th>Email</th><th>Equipo</th><th>Puntos</th><th>Monedas</th><th>⚽🟥🥅🤝</th><th>Canjeado</th></tr></thead><tbody>';
-  d.records.forEach(r=>{
-    const e=r.events||{};
-    html+='<tr><td>'+esc((r.date||'').slice(0,10))+'</td><td>'+esc(r.email||'—')+'</td><td>'+esc(r.team||'—')+'</td><td><b style="color:#FF6B00">'+(+r.score||0).toLocaleString('es')+'</b></td><td>'+(r.coins||0)+'</td><td style="font-size:12px">⚽'+(e.poste||0)+' 🟥'+(e.roja||0)+' 🥅'+(e.penal||0)+' 🤝'+(e.empate||0)+'</td><td>'+(r.redeemed?'<span class="tag si">SÍ</span>':'<span class="tag no">NO</span>')+'</td></tr>';
+  const fT=$('fTeam').value, fG=$('fGender').value, fR=$('fRedeem').value, fM=$('fMode').value, fS=$('fSearch').value.toLowerCase().trim();
+  let recs=DATA.records||[];
+  if(fT) recs=recs.filter(r=>r.team===fT);
+  if(fG) recs=recs.filter(r=>(r.gender||'M')===fG);
+  if(fR==='si') recs=recs.filter(r=>r.redeemed);
+  else if(fR==='no') recs=recs.filter(r=>!r.redeemed);
+  if(fM) recs=recs.filter(r=>(r.mode||(r.email?'qr':'rank'))===fM);
+  if(fS) recs=recs.filter(r=>(r.name||'').toLowerCase().includes(fS)||(r.email||'').toLowerCase().includes(fS));
+  if(!recs.length){ $('tablewrap').innerHTML='<div class="empty">Sin resultados 🦬</div>'; return; }
+  let html='<table><thead><tr><th>Fecha</th><th>Apodo</th><th>♀♂</th><th>Equipo</th><th>Email</th><th>Pts</th><th>🪙</th><th>⚽🟥🥅🤝</th><th>Modo</th><th>Canjeado</th><th>Acciones</th></tr></thead><tbody>';
+  recs.forEach(r=>{
+    const e=r.events||{}, g=r.gender||'M', tf=TEAM_F[r.team]||'';
+    const mode=r.mode||(r.email?'qr':'rank');
+    html+='<tr><td>'+esc((r.date||'').slice(0,10))+'</td><td><b>'+esc(r.name||'—')+'</b></td><td><span class="g-'+(g==='F'?'f':'m')+'">'+(g==='F'?'♀':'♂')+'</span></td><td>'+tf+' '+esc(r.team||'')+'</td><td style="font-size:11.5px;color:rgba(255,255,255,.7)">'+esc(r.email||'—')+'</td><td><b style="color:#FF6B00">'+(+r.score||0).toLocaleString('es')+'</b></td><td>'+(r.coins||0)+'</td><td style="font-size:11.5px">⚽'+(e.poste||0)+' 🟥'+(e.roja||0)+' 🥅'+(e.penal||0)+' 🤝'+(e.empate||0)+'</td><td><span class="tag '+(mode==='qr'?'qr':'rk')+'">'+(mode==='qr'?'📷 QR':'🏆 RANK')+'</span></td><td>'+(r.redeemed?'<span class="tag si">SÍ</span>':(r.email?'<span class="tag no">NO</span>':'<span class="tag no">—</span>'))+'</td><td class="act">'+(r.email&&!r.redeemed?'<button class="b-redeem" data-redeem="'+r.id+'">✅</button>':'')+'<button class="b-del" data-del="'+r.id+'">🗑️</button></td></tr>';
   });
   html+='</tbody></table>';
   $('tablewrap').innerHTML=html;
+  $('tablewrap').querySelectorAll('[data-redeem]').forEach(b=>b.onclick=()=>markRedeem(b.dataset.redeem));
+  $('tablewrap').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delOne(b.dataset.del));
+}
+
+async function markRedeem(id){
+  if(!confirm('✅ Marcar como CANJEADO?\nID: '+id))return;
+  const pin=prompt('PIN cajero (vacío si no tenés):','');
+  try{
+    const r=await fetch('/api/score?id='+encodeURIComponent(id),{method:'PUT',headers:pin?{'x-cashier-pin':pin}:{}});
+    if(!r.ok){alert('❌ Error: '+r.status+(r.status===403?' (PIN inválido)':''));return;}
+    loadData();
+  }catch(e){alert('❌ '+e.message);}
+}
+
+async function delOne(id){
+  if(!confirm('🗑️ Borrar este registro?\nID: '+id))return;
+  try{
+    const r=await fetch('/api/score?id='+encodeURIComponent(id)+'&key='+encodeURIComponent(KEY),{method:'DELETE'});
+    if(!r.ok){alert('❌ Error: '+r.status);return;}
+    loadData();
+  }catch(e){alert('❌ '+e.message);}
+}
+
+async function wipeAll(){
+  if(!confirm('⚠️ BORRAR TODOS LOS REGISTROS?\n\nEsto NO se puede deshacer.\nQuedará el ranking en CERO.'))return;
+  if(!confirm('🚨 ÚLTIMA confirmación.\n¿Borrar TODO definitivamente?'))return;
+  try{
+    const r=await fetch('/api/score?all=1&key='+encodeURIComponent(KEY),{method:'DELETE'});
+    const d=await r.json();
+    if(!r.ok){alert('❌ Error: '+(d.error||r.status));return;}
+    alert('✅ Borrado completo. '+(d.deleted||0)+' registros eliminados.');
+    loadData();
+  }catch(e){alert('❌ '+e.message);}
 }
 
 function logout(msg){
@@ -119,10 +195,11 @@ $('enter').onclick=()=>{
 $('key').addEventListener('keydown',e=>{ if(e.key==='Enter')$('enter').click(); });
 $('refresh').onclick=loadData;
 $('logout').onclick=()=>logout('');
+$('wipeAll').onclick=wipeAll;
 $('dlCsv').onclick=()=>location.href='/api/export?key='+encodeURIComponent(KEY);
 $('dlEmails').onclick=()=>location.href='/api/export?emails=1&key='+encodeURIComponent(KEY);
+['fTeam','fGender','fRedeem','fMode','fSearch'].forEach(id=>$(id).addEventListener('input',renderTable));
 
-// Auto-login si ya había clave en la sesión
 if(KEY) loadData();
 </script>
 </body></html>
