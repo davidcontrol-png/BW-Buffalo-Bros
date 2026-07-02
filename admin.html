@@ -72,9 +72,9 @@ tr:hover td{background:rgba(255,107,0,.06)}
       <div class="stat"><b id="stPend">0</b><span>PENDIENTES</span></div>
     </div>
     <div class="stats">
-      <div class="stat" style="border-color:rgba(255,107,0,.5)"><b id="stAlitas" style="color:#FF6B00">0</b><span>🍗 ALITAS FC</span></div>
-      <div class="stat" style="border-color:rgba(241,196,15,.5)"><b id="stChunks" style="color:#f1c40f">0</b><span>🍖 CLUB CHUNKS</span></div>
-      <div class="stat" style="border-color:rgba(231,76,60,.5)"><b id="stPicante" style="color:#e74c3c">0</b><span>🌶️ PICANTE CF</span></div>
+      <div class="stat" style="border-color:rgba(255,107,0,.5)"><b id="stAlitas" style="color:#FF6B00">0</b><span style="display:flex;align-items:center;justify-content:center;gap:6px;"><span id="stIcoAlitas"></span>ALITAS FC</span></div>
+      <div class="stat" style="border-color:rgba(241,196,15,.5)"><b id="stChunks" style="color:#f1c40f">0</b><span style="display:flex;align-items:center;justify-content:center;gap:6px;"><span id="stIcoChunks"></span>CLUB CHUNKS</span></div>
+      <div class="stat" style="border-color:rgba(231,76,60,.5)"><b id="stPicante" style="color:#e74c3c">0</b><span style="display:flex;align-items:center;justify-content:center;gap:6px;"><span id="stIcoPicante"></span>PICANTE CF</span></div>
       <div class="stat" style="border-color:rgba(255,128,192,.5)"><b id="stFem" style="color:#ff80c0">0</b><span>♀ MUJERES</span></div>
     </div>
     <div class="tools">
@@ -98,7 +98,46 @@ tr:hover td{background:rgba(255,107,0,.06)}
 const $=id=>document.getElementById(id);
 let KEY=sessionStorage.getItem('bw_admin_key')||'';
 let DATA=null;
-const TEAM_F={'ALITAS FC':'🍗','CLUB CHUNKS':'🍖','PICANTE CF':'🌶️'};
+function drawWingette(ctx,cx,cy,s){   ctx.save();ctx.translate(cx,cy);ctx.rotate(-0.35);   ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.ellipse(0,s*.55,s*.55,s*.16,0,0,Math.PI*2);ctx.fill();   ctx.strokeStyle='#f3e2c2';ctx.lineWidth=s*.14;ctx.lineCap='round';   ctx.beginPath();ctx.moveTo(-s*.1,-s*.05);ctx.lineTo(-s*.64,-s*.3);ctx.stroke();   ctx.beginPath();ctx.moveTo(-s*.1,s*.14);ctx.lineTo(-s*.62,-s*.02);ctx.stroke();   ctx.fillStyle='#fbf1da';   ctx.beginPath();ctx.arc(-s*.66,-s*.32,s*.12,0,Math.PI*2);ctx.fill();   ctx.beginPath();ctx.arc(-s*.64,-s*.04,s*.12,0,Math.PI*2);ctx.fill();   const g=ctx.createLinearGradient(-s*.3,-s*.4,s*.5,s*.5);   g.addColorStop(0,'#f4ad55');g.addColorStop(.5,'#cf5a1d');g.addColorStop(1,'#86300f');   ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(s*.06,s*.04,s*.52,s*.42,.3,0,Math.PI*2);ctx.fill();   ctx.fillStyle='rgba(255,185,95,.5)';ctx.beginPath();ctx.ellipse(-s*.04,-s*.12,s*.27,s*.15,.3,0,Math.PI*2);ctx.fill();   ctx.fillStyle='rgba(140,30,10,.55)';   ctx.beginPath();ctx.arc(s*.2,s*.1,s*.05,0,Math.PI*2);ctx.fill();   ctx.beginPath();ctx.arc(s*.02,s*.24,s*.04,0,Math.PI*2);ctx.fill();   ctx.beginPath();ctx.arc(s*.28,s*.0,s*.035,0,Math.PI*2);ctx.fill();   ctx.restore(); } 
+
+function drawBoneless(ctx,cx,cy,s){   ctx.save();ctx.translate(cx,cy);   ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.ellipse(0,s*.52,s*.5,s*.15,0,0,Math.PI*2);ctx.fill();   const g=ctx.createRadialGradient(-s*.2,-s*.22,s*.1,0,0,s*.62);   g.addColorStop(0,'#f3c074');g.addColorStop(.55,'#d08a2d');g.addColorStop(1,'#955312');   ctx.fillStyle=g;ctx.beginPath();   const pts=11;   for(let i=0;i<=pts;i++){const a=i/pts*Math.PI*2;const rr=s*.46+Math.sin(i*2.3)*s*.06+Math.cos(i*1.7)*s*.04;const x=Math.cos(a)*rr,y=Math.sin(a)*rr*.82;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}   ctx.closePath();ctx.fill();   ctx.strokeStyle='rgba(110,55,10,.4)';ctx.lineWidth=s*.045;ctx.stroke();   ctx.fillStyle='rgba(255,215,150,.55)';   [[-.16,-.12,.07],[.12,-.06,.055],[-.04,.16,.06],[.2,.12,.05],[.02,.0,.05],[-.22,.06,.045]].forEach(d=>{ctx.beginPath();ctx.arc(s*d[0],s*d[1],s*d[2],0,Math.PI*2);ctx.fill();});   ctx.fillStyle='rgba(110,55,10,.45)';   [[.06,-.2,.035],[-.18,-.02,.03],[.17,.0,.03],[-.06,.24,.028]].forEach(d=>{ctx.beginPath();ctx.arc(s*d[0],s*d[1],s*d[2],0,Math.PI*2);ctx.fill();});   ctx.fillStyle='rgba(255,238,190,.4)';ctx.beginPath();ctx.ellipse(-s*.18,-s*.2,s*.14,s*.09,-.4,0,Math.PI*2);ctx.fill();   ctx.restore(); } 
+
+function drawChili(ctx,cx,cy,s){
+  ctx.save();ctx.translate(cx,cy);
+  ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.ellipse(0,s*.55,s*.45,s*.13,0,0,Math.PI*2);ctx.fill();
+  ctx.rotate(.22);
+  const g=ctx.createLinearGradient(-s*.4,-s*.4,s*.5,s*.6);
+  g.addColorStop(0,'#ff6b35');g.addColorStop(.5,'#e63946');g.addColorStop(1,'#a02020');
+  ctx.fillStyle=g;
+  ctx.beginPath();
+  ctx.moveTo(-s*.35,-s*.45);
+  ctx.quadraticCurveTo(s*.05,-s*.55,s*.4,-s*.15);
+  ctx.quadraticCurveTo(s*.55,s*.25,s*.15,s*.55);
+  ctx.quadraticCurveTo(-s*.2,s*.6,-s*.42,s*.2);
+  ctx.quadraticCurveTo(-s*.55,-s*.15,-s*.35,-s*.45);
+  ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,220,180,.35)';
+  ctx.beginPath();ctx.ellipse(-s*.18,-s*.05,s*.12,s*.3,.3,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#2a7a2a';
+  ctx.beginPath();
+  ctx.moveTo(-s*.3,-s*.45);
+  ctx.quadraticCurveTo(-s*.45,-s*.62,-s*.12,-s*.7);
+  ctx.quadraticCurveTo(s*.15,-s*.72,s*.05,-s*.5);
+  ctx.quadraticCurveTo(-s*.1,-s*.42,-s*.3,-s*.45);
+  ctx.closePath();ctx.fill();
+  ctx.fillStyle='#3da33d';
+  ctx.beginPath();ctx.ellipse(-s*.18,-s*.55,s*.16,s*.07,.4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#7d4a2a';ctx.fillRect(-s*.04,-s*.78,s*.08,s*.12);
+  ctx.restore();
+}
+
+function makeIcon(drawFn,sizeBoost){const cv=document.createElement('canvas'),r=2,S=64;cv.width=S*r;cv.height=S*r;const ctx=cv.getContext('2d');ctx.scale(r,r);drawFn(ctx,S/2,S/2,S*.5*(sizeBoost||1));return cv.toDataURL();} 
+
+const TEAM_F={
+  'ALITAS FC': makeIcon(drawWingette, 0.95),
+  'CLUB CHUNKS': makeIcon(drawBoneless, 1.25),
+  'PICANTE CF': makeIcon(drawChili, 1.1)
+};
 
 async function loadData(){
   $('tablewrap').innerHTML='<div class="empty">⏳ Cargando…</div>';
@@ -123,6 +162,12 @@ function showPanel(){
   $('stChunks').textContent=bt['CLUB CHUNKS']||0;
   $('stPicante').textContent=bt['PICANTE CF']||0;
   $('stFem').textContent=(DATA.byGender&&DATA.byGender.F)||0;
+  
+  // Inyectar logos agrandados en las cajas de estadísticas
+  $('stIcoAlitas').innerHTML = TEAM_F['ALITAS FC'] ? '<img src="' + TEAM_F['ALITAS FC'] + '" style="width:28px;height:28px;object-fit:contain;vertical-align:middle;">' : '';
+  $('stIcoChunks').innerHTML = TEAM_F['CLUB CHUNKS'] ? '<img src="' + TEAM_F['CLUB CHUNKS'] + '" style="width:28px;height:28px;object-fit:contain;vertical-align:middle;">' : '';
+  $('stIcoPicante').innerHTML = TEAM_F['PICANTE CF'] ? '<img src="' + TEAM_F['PICANTE CF'] + '" style="width:28px;height:28px;object-fit:contain;vertical-align:middle;">' : '';
+  
   renderTable();
 }
 
@@ -141,8 +186,7 @@ function renderTable(){
   recs.forEach(r=>{
     const e=r.events||{}, g=r.gender||'M', tf=TEAM_F[r.team]||'';
     const mode=r.mode||(r.email?'qr':'rank');
-    const logoImg = TEAM_F[r.team] ? '<img src="' + TEAM_F[r.team] + '" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;border-radius:4px;">' : '';
-    html+='<tr><td>'+esc((r.date||'').slice(0,10))+'</td><td><b>'+esc(r.name||'—')+'</b></td><td><span class="g-'+(g==='F'?'f':'m')+'">'+(g==='F'?'♀':'♂')+'</span></td><td><div style="display:flex;align-items:center;">'+logoImg+esc(r.team||'')+'</div></td><td style="font-size:11.5px;color:rgba(255,255,255,.7)">'+esc(r.email||'—')+'</td><td><b style="color:#FF6B00">'+(+r.score||0).toLocaleString('es')+'</b></td><td>'+(r.coins||0)+'</td><td style="font-size:11.5px">⚽'+(e.poste||0)+' 🟥'+(e.roja||0)+' 🥅'+(e.penal||0)+' 🤝'+(e.empate||0)+'</td><td><span class="tag '+(mode==='qr'?'qr':'rk')+'">'+(mode==='qr'?'📷 QR':'🏆 RANK')+'</span></td><td>'+(r.redeemed?'<span class="tag si">SÍ</span>':(r.email?'<span class="tag no">NO</span>':'<span class="tag no">—</span>'))+'</td><td class="act">'+(r.email&&!r.redeemed?'<button class="b-redeem" data-redeem="'+r.id+'">✅</button>':'')+'<button class="b-del" data-del="'+r.id+'">🗑️</button></td></tr>';
+    html+='<tr><td>'+esc((r.date||'').slice(0,10))+'</td><td><b>'+esc(r.name||'—')+'</b></td><td><span class="g-'+(g==='F'?'f':'m')+'">'+(g==='F'?'♀':'♂')+'</span></td><td>'+tf+' '+esc(r.team||'')+'</td><td style="font-size:11.5px;color:rgba(255,255,255,.7)">'+esc(r.email||'—')+'</td><td><b style="color:#FF6B00">'+(+r.score||0).toLocaleString('es')+'</b></td><td>'+(r.coins||0)+'</td><td style="font-size:11.5px">⚽'+(e.poste||0)+' 🟥'+(e.roja||0)+' 🥅'+(e.penal||0)+' 🤝'+(e.empate||0)+'</td><td><span class="tag '+(mode==='qr'?'qr':'rk')+'">'+(mode==='qr'?'📷 QR':'🏆 RANK')+'</span></td><td>'+(r.redeemed?'<span class="tag si">SÍ</span>':(r.email?'<span class="tag no">NO</span>':'<span class="tag no">—</span>'))+'</td><td class="act">'+(r.email&&!r.redeemed?'<button class="b-redeem" data-redeem="'+r.id+'">✅</button>':'')+'<button class="b-del" data-del="'+r.id+'">🗑️</button></td></tr>';
   });
   html+='</tbody></table>';
   $('tablewrap').innerHTML=html;
