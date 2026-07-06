@@ -46,7 +46,7 @@ button:disabled{opacity:.5;cursor:default}
 <script>
 /* ===== CONFIG ===== */
 const REQUIERE_PIN = true;          // poné false si NO querés pedir PIN de cajero
-const PIN_LOCAL    = "1234";        // PIN de respaldo si NO validás en el servidor
+const PIN_LOCAL    = "4827";        // PIN de respaldo si NO validás en el servidor        // PIN de respaldo si NO validás en el servidor
 /* ================== */
 
 const q=new URLSearchParams(location.search),id=q.get('id'),body=document.getElementById('body');
@@ -128,10 +128,7 @@ async function doRedeem(){
     const inp = document.getElementById('pin');
     pin = (inp.value||'').trim();
     if(!pin){ inp.focus(); return; }
-    // Validación local de respaldo (la real la hace el servidor)
-    if(PIN_LOCAL && pin !== PIN_LOCAL){
-      const m=document.getElementById('pinmsg'); m.classList.remove('hidden'); inp.value=''; inp.focus(); return;
-    }
+    // El servidor validará la firma del PIN remotamente contra la variable CASHIER_PIN
   }
   if(!confirm('¿Confirmás el canje de este ticket? Esta acción no se puede deshacer.')) return;
 
