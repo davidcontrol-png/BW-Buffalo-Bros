@@ -487,8 +487,8 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
       </div>
     </div>
     <div id="fmStep1">
-      <div class="fm-mode-row" style="display:none">
-        <button class="fm-mode-btn active" id="fmModeQR">📷 QR DE CANJE</button>
+      <div class="fm-mode-row">
+        <button class="fm-mode-btn active" id="fmModeQR">📷 QR + CERTIFICADO</button>
         <button class="fm-mode-btn" id="fmModeRank">🏆 SOLO RANKING</button>
       </div>
       <div id="fmQRMode">
@@ -1288,39 +1288,16 @@ if (btnCopy) {
 
 var btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
-  btnDownload.addEventListener('click', function() {
-    var email = document.getElementById('fmTkEmail').textContent || '';
-    var scoreVal = document.getElementById('fmTkPts').textContent || '';
-    var team = document.getElementById('fmTkTeam').textContent || '';
-    var fecha = document.getElementById('fmTkDate').textContent || '';
-    var token = document.getElementById('fmTkToken').textContent || 'BW';
-    var qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-    document.getElementById('pdfEmail').textContent = email;
-    document.getElementById('pdfScore').textContent = scoreVal;
-    document.getElementById('pdfTeam').textContent = team;
-    document.getElementById('pdfDate').textContent = fecha;
-    document.getElementById('pdfTokenSpot').textContent = 'CODIGO #' + token;
-    var qrSpot = document.getElementById('pdfQRSpot');
-    if (qrSpot) {
-      var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload);
-      qrSpot.innerHTML = '<img src="' + qrUrl + '" width="120" height="120">';
-    }
-    var pdfEl = document.getElementById('pdfTemplateSource');
-    if (pdfEl) {
-      pdfEl.style.position = 'fixed';
-      pdfEl.style.left = '0';
-      pdfEl.style.top = '0';
-      pdfEl.style.zIndex = '99999';
-      pdfEl.style.display = 'block';
-      window.print();
-      setTimeout(function() {
-        pdfEl.style.position = 'absolute';
-        pdfEl.style.left = '-9999px';
-        pdfEl.style.display = 'none';
-      }, 1000);
-    }
-  });
-}
+btnDownload.addEventListener('click', function() {
+  var email = document.getElementById('fmTkEmail').textContent || '';
+  var scoreVal = document.getElementById('fmTkPts').textContent || '';
+  var team = document.getElementById('fmTkTeam').textContent || '';
+  var fecha = document.getElementById('fmTkDate').textContent || '';
+  var token = document.getElementById('fmTkToken').textContent || 'BW';
+  var qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
+  var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload);
+
+  var certHTML =
 
 const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
