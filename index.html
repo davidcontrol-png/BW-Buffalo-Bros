@@ -213,128 +213,48 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
   0% { left: -150%; }
   100% { left: 150%; }
 }
-
-/* --- Estructura Oculta del Certificado para la Descarga PDF --- */
-#pdfTemplateSource {
-  position: absolute;
-  left: -9999px;
-  top: -9999px;
-  width: 700px;
-  background: #fff;
-  color: #1a0500;
-  padding: 40px;
-  font-family: 'Oswald', 'Arial', sans-serif;
-  border: 15px double #7B1A1A;
-}
-.pdf-cert-border {
-  border: 3px solid #ff7700;
-  padding: 30px;
-  text-align: center;
-}
-.pdf-logo-box {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  color: #7B1A1A;
-  letter-spacing: 3px;
-  margin-bottom: 5px;
-}
-.pdf-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  color: #ff5100;
-  letter-spacing: 4px;
-  margin: 15px 0 5px 0;
-  text-transform: uppercase;
-}
-.pdf-subtitle {
-  font-size: 16px;
-  color: #7B1A1A;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-bottom: 25px;
-}
-.pdf-line {
-  border: none;
-  border-top: 2px solid rgba(123,26,26,0.3);
-  margin: 15px auto;
-  width: 80%;
-}
-.pdf-data-table {
-  width: 90%;
-  margin: 25px auto;
-  border-collapse: collapse;
-  font-size: 16px;
-}
-.pdf-data-table td {
-  padding: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  text-align: left;
-}
-.pdf-data-table td.label {
-  font-weight: bold;
-  color: #7B1A1A;
-  width: 40%;
-}
-.pdf-data-table td.value {
-  color: #333;
-}
-.pdf-signature-section {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 40px;
-}
-.pdf-sig-box {
-  width: 40%;
-  text-align: center;
-}
-.pdf-sig-line {
-  border-top: 2px solid #7B1A1A;
-  margin-top: 50px;
-  font-weight: bold;
-  font-size: 14px;
+.semis-banner h3,
+.semis-banner p,
+.semis-banner h3 *,
+.semis-banner p * {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,1) !important;
 }
 
-#fmGenerate{width:100%;margin-top:12px;padding:16px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
-#fmStep2{display:none}
-.fm-mode-row{display:flex;gap:10px;margin-bottom:16px}
-.fm-mode-btn{flex:1;padding:12px 8px;border:2px solid rgba(255,107,0,.28);border-radius:9px;background:rgba(255,107,0,.06);color:rgba(255,255,255,.55);font-family:'Bebas Neue',sans-serif;font-size:clamp(15px,3.8vw,19px);letter-spacing:1px;cursor:pointer;transition:all .18s}
-.fm-mode-btn.active{background:rgba(255,107,0,.2);border-color:#FF6B00;color:#fff;box-shadow:0 0 14px rgba(255,107,0,.22)}
-#fmName{width:100%;padding:15px 14px;border-radius:10px;border:2px solid rgba(241,196,15,.38);background:rgba(0,0,0,.5);color:#fff;font-family:'Oswald',sans-serif;font-size:clamp(15px,4vw,17px);outline:none;margin-top:4px}
-#fmName::placeholder{color:rgba(255,255,255,.28)}
-#fmName:focus{border-color:#f1c40f;box-shadow:0 0 14px rgba(241,196,15,.28)}
-#fmNameError{color:#ff7a5c;font-size:clamp(11px,3vw,13px);min-height:14px;margin-top:6px}
-#fmRegisterName{width:100%;margin-top:12px;padding:16px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a0500;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(241,196,15,.35)}
-.fm-ticket{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.7);margin-bottom:14px;position:relative}
-.fmt-head{background:linear-gradient(135deg,#7B1A1A,#a02020);padding:14px 16px;display:flex;align-items:center;gap:11px}
-.fmt-head img{width:clamp(36px,9vw,46px);height:clamp(36px,9vw,46px);border-radius:8px;border:2px solid rgba(255,255,255,.25)}
-.fmt-head-text .fht1{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,5vw,24px);color:#fff;letter-spacing:2px;display:block;line-height:1.1}
-.fmt-head-text .fht2{font-size:clamp(9px,2.4vw,12px);color:rgba(255,200,100,.75);letter-spacing:2px;display:block}
-.fmt-qrzone{background:#fff;padding:16px 14px 10px;text-align:center;position:relative}
-.fmt-qrzone::after,.fmt-qrzone::before{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:#0a0000;top:50%;transform:translateY(-50%)}
-.fmt-qrzone::before{left:-12px}.fmt-qrzone::after{right:-12px}
-#fmQRCanvas{display:block;margin:0 auto;border-radius:8px;width:clamp(250px,74vw,360px);height:clamp(250px,74vw,360px)}
-.fmt-scan-label{font-size:clamp(11px,3vw,14px);color:rgba(123,26,26,.7);letter-spacing:1px;margin-top:10px;display:block;font-weight:600}
-.fmt-sep{border:none;border-top:2.5px dashed rgba(123,26,26,.2);margin:0}
-.fmt-data{background:#fdf5ee;padding:12px 18px 14px}
-.fmt-data-title{font-size:clamp(8px,2.2vw,10px);color:rgba(123,26,26,.5);letter-spacing:3px;text-align:center;margin-bottom:10px;text-transform:uppercase}
-.fmt-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(123,26,26,.08)}
-.fmt-row:last-child{border:none}
-.fmt-lbl{font-size:clamp(9.5px,2.6vw,12px);color:rgba(80,20,10,.6);letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
-.fmt-val{font-size:clamp(13px,3.2vw,16px);font-weight:600;color:#2a0606;text-align:right;word-break:break-all;max-width:62%}
-.fmt-val.pts{color:#c84d00;font-family:'Bebas Neue',sans-serif;font-size:clamp(17px,4.5vw,22px)}
-.fmt-val.coins{color:#b8860b}
-.fmt-token{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 0 4px;margin-top:2px;border-top:1px solid rgba(123,26,26,.1)}
-.fmt-token .tk-badge{background:#7B1A1A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(13px,3.5vw,16px);letter-spacing:2px;padding:3px 9px;border-radius:4px}
-.fmt-token .tk-label{font-size:clamp(8px,2.2vw,10px);color:rgba(123,26,26,.5);letter-spacing:1.5px}
-.fmt-foot{background:#7B1A1A;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-.fmt-foot-left{font-family:'Bebas Neue',sans-serif;font-size:clamp(13px,3.5vw,16px);color:#fff;letter-spacing:2px}
-.fmt-foot-right{font-size:clamp(8px,2.2vw,10px);color:rgba(255,200,100,.6);letter-spacing:1.5px}
-.fmt-qr-loading{width:clamp(250px,74vw,360px);height:clamp(250px,74vw,360px);margin:0 auto;background:#f5f0eb;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px dashed rgba(123,26,26,.2)}
-.fmt-qr-loading .qrl-spin{font-size:32px;animation:spin .8s linear infinite}
-.fmt-qr-loading .qrl-txt{font-size:clamp(10px,2.8vw,13px);color:rgba(123,26,26,.6);letter-spacing:1px}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-#fmRestart{width:100%;padding:16px 0;border:none;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
+<!-- Certificado visible en pantalla para descarga manual -->
+<div id="certPreviewBox" style="display:none; margin-top:14px; background:#2a0a0a; border:2px solid #ff7700; border-radius:12px; padding:12px;">
+  <div style="color:#ff9f43; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; text-align:center; margin-bottom:10px;">👁️ TU CERTIFICADO OFICIAL</div>
+  <div style="background:#fff; border-radius:8px; padding:8px; max-height:420px; overflow-y:auto;">
+    <div id="pdfTemplateSource" style="width:100%; background:#fff; color:#1a0500; padding:20px; font-family:'Oswald','Arial',sans-serif; border:6px double #7B1A1A; box-sizing:border-box;">
+      <div style="border:2px solid #ff7700; padding:15px; text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:22px; color:#7B1A1A; letter-spacing:2px; margin-bottom:5px;">🦬 SOCAZONE BUFFALO BROS</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:26px; color:#ff5100; letter-spacing:2px; margin:10px 0 5px; text-transform:uppercase; line-height:1.1;">PERMISO OFICIAL DE AUSENCIA</div>
+        <div style="font-size:11px; color:#7B1A1A; letter-spacing:1px; text-transform:uppercase; font-weight:bold; margin-bottom:15px;">VÁLIDO PARA LAS SEMIFINALES · MUNDIAL 2026</div>
+        <hr style="border:none; border-top:1.5px solid rgba(123,26,26,0.3); margin:10px auto; width:80%;">
+        <p style="font-size:11px; line-height:1.5; margin:12px 0; color:#1a0500;">El Dr. Soca-son certifica que el portador ha completado con éxito todas las metas del torneo y queda autorizado para presenciar las transmisiones correspondientes:</p>
+        <table style="width:95%; margin:12px auto; border-collapse:collapse; font-size:12px;">
+          <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A; width:40%;">Colaborador:</td><td id="pdfEmail" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
+          <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Puntaje:</td><td id="pdfScore" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
+          <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Equipo:</td><td id="pdfTeam" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
+          <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Fecha:</td><td id="pdfDate" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
+        </table>
+        <p style="font-size:10px; font-style:italic; color:#ff5100; font-weight:bold; margin:10px 0; line-height:1.3;">* Se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Inmunidad de alitas incluida.</p>
+        <div style="display:flex; justify-content:space-around; margin-top:20px; align-items:flex-end;">
+          <div style="width:45%; text-align:center;">
+            <div id="pdfQRSpot" style="width:80px; height:80px; margin:0 auto; background:#eee; display:flex; align-items:center; justify-content:center;"></div>
+            <div id="pdfTokenSpot" style="font-size:8px; margin-top:4px; font-weight:bold; color:#1a0500;">CÓDIGO #——</div>
+          </div>
+          <div style="width:45%; text-align:center;">
+            <div style="font-family:'Bebas Neue',sans-serif; font-size:16px; color:#7B1A1A; line-height:1;">Dr. Soca-Son</div>
+            <div style="border-top:1.5px solid #7B1A1A; margin-top:25px; font-size:10px; font-weight:bold; color:#1a0500;">Dr. Soca-Son<br><span style="font-size:9px; font-weight:normal; color:#666;">(Neuro-Socazón)</span></div>
+          </div>
+        </div>
+        <p style="font-size:8px; color:#777; margin-top:15px; border-top:1px solid rgba(0,0,0,.1); padding-top:6px; text-align:center;">* Buffalo Wings® no se hace responsable si tu jefe dice que no.</p>
+      </div>
+    </div>
+  </div>
+  <button id="btnDownloadCert" style="display:block; width:100%; margin-top:10px; padding:14px; background:linear-gradient(135deg,#FF6B00,#c84d00); color:#fff; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; cursor:pointer;">📥 GUARDAR / IMPRIMIR CERTIFICADO</button>
+</div>ear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
 
 /* --- Nuevos Estilos Unificados para el Permiso de Trabajo --- */
 .fmt-permiso-seccion { background: #fdf5ee; border-top: 2.5px dashed rgba(123,26,26,.2); padding: 16px 18px; text-align: left; }
