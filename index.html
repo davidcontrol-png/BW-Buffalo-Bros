@@ -1486,6 +1486,7 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   const emailTemplate = `Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;
   const displayName = formatDisplayName(email);
   const certViewUrl = 'https://bwbros.netlify.app/canje?token=' + encodeURIComponent(token) + '&email=' + encodeURIComponent(email) + '&preview=1';
+  const certImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=2&ecc=M&data=' + encodeURIComponent(certViewUrl);
   document.getElementById('fmPermisoText').value = emailTemplate;
 
   const payload = 'https://bwbros.netlify.app/canje?id=' + encodeURIComponent(recId) + '&e=' + encodeURIComponent(email) + '&p=' + score + '&m=' + coinCount + '&ev=' + evStr + '&eq=' + encodeURIComponent(SEL.name) + '&f=' + fecha + '&t=' + token;
@@ -1521,7 +1522,7 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   A.coin();
   document.getElementById('finishModal').scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Enviar email al final, para no interrumpir la generación del certificado ni la vista en móvil.
+  // Enviar email al final, una vez que la vista del certificado ya fue mostrada.
   setTimeout(async () => {
     try {
       if (window.BW_EMAILJS_READY && window.emailjs) {
@@ -1532,17 +1533,19 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
           coins: coinCount,
           team: SEL.name,
           token: token,
-          message: emailTemplate
+          message: emailTemplate,
+          certificate_url: certViewUrl,
+          certificate_image_url: certImageUrl
         });
       } else {
-        const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
+        const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nImagen del certificado: ${certImageUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
         const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
         try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
       }
     } catch (errMail) {
       console.info('Correo de permiso omitido; EmailJS no está configurado o falló.', errMail);
     }
-  }, 250);
+  }, 1200);
 
   btn.disabled = false;
   btn.textContent = '▶ GENERAR QR Y PERMISO';
@@ -1585,7 +1588,9 @@ if (btnCopy) {
 
 function showCertificatePreview(html){
   var existing=document.getElementById('certPreviewOverlay');
-  if(existing)existing.remove();
+  if(existing){
+    if(existing.parentNode){existing.parentNode.removeChild(existing);} else if(typeof existing.remove==='function'){existing.remove();}
+  }
   var overlay=document.createElement('div');
   overlay.id='certPreviewOverlay';
   overlay.style.cssText='position:fixed;inset:0;background:rgba(4,0,0,.95);z-index:9000;display:flex;align-items:center;justify-content:center;padding:14px;';
