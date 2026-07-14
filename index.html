@@ -213,6 +213,7 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
   0% { left: -150%; }
   100% { left: 150%; }
 }
+.semis-banner h3,.semis-banner p,.semis-banner h3 *,.semis-banner p *{color:#ffffff!important;text-shadow:0 2px 8px rgba(0,0,0,1)!important;}
 .semis-banner h3,
 .semis-banner p,
 .semis-banner h3 *,
@@ -1280,46 +1281,20 @@ if (btnCopy) {
 
 const btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
-  btnDownload.addEventListener('click', () => {
-    btnDownload.textContent = '⏳ GENERANDO PDF…';
-    btnDownload.disabled = true;
+btnDownload.addEventListener('click', () => {
+  const email = document.getElementById('pdfEmail').textContent || '';
+  const scoreVal = document.getElementById('pdfScore').textContent || score + ' PTS';
+  const team = document.getElementById('pdfTeam').textContent || SEL.flag + ' ' + SEL.name;
+  const fecha = document.getElementById('pdfDate').textContent || new Date().toISOString().slice(0,10);
+  const token = document.getElementById('fmTkToken').textContent || 'BW';
+  const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
 
-    const element = document.getElementById('pdfTemplateSource');
-    if (!element) {
-      alert('Error: No se encontró la plantilla de impresión.');
-      btnDownload.textContent = '📥 GUARDAR CERTIFICADO EN PDF';
-      btnDownload.disabled = false;
-      return;
-    }
-
-    const token = document.getElementById('fmTkToken').textContent || 'BW';
-    const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-    // Configuración limpia de html2pdf sin mover al usuario ni abrir ventanas temporales
-    const opt = {
-      margin: 0.25,
-      filename: `Permiso_Semifinales_${token}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: isMobileDevice ? 1.5 : 2, 
-        useCORS: true, 
-        allowTaint: true 
-      },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    // Generar y descargar el PDF manualmente desde la vista previa
-    html2pdf().set(opt).from(element).save().then(() => {
-      btnDownload.textContent = '📥 GUARDAR CERTIFICADO EN PDF';
-      btnDownload.disabled = false;
-    }).catch(e => {
-      console.error('Error generando PDF:', e);
-      btnDownload.textContent = '📥 REINTENTAR DESCARGA';
-      btnDownload.disabled = false;
-      alert('Error al generar PDF. Por favor, vuelve a intentarlo.');
-    });
-  });
-}
+  const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
+  if (!win) {
+    alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.');
+    return;
+  }
+  win.document.write(`<!DOCTYPE html>
 document.getElementById('fmRestart').addEventListener('click',()=>{document.getElementById('finishModal').classList.remove('show');goToSelect();});
 
 document.getElementById('fmModeQR').addEventListener('click',()=>{document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';});
