@@ -15,9 +15,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Bebas+Neue&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{overflow:hidden;overscroll-behavior:none}
+html,body{overflow-x:hidden;overscroll-behavior:none}
 body{background:#0a0000;width:100vw;height:100vh;height:100dvh;font-family:'Oswald',sans-serif;-webkit-tap-highlight-color:transparent} body.gameActive{touch-action:none;overflow:hidden}
-#scaleWrap{position:fixed;top:0;left:0;transform-origin:top left;will-change:transform}
+#scaleWrap{position:fixed;top:0;left:0;transform-origin:top left;will-change:transform;width:100%;max-width:100vw}
 #introScreen{width:1100px;position:relative;overflow:hidden;cursor:pointer}
 #introCanvas{display:block;touch-action:none}
 .intro-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:30px;pointer-events:none}
@@ -126,7 +126,14 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
 #tRun.sprint-on .blbl { color:#ffc200; font-weight:700; }
 #finishModal{display:none;position:fixed;inset:0;z-index:6000;background:radial-gradient(circle at 50% 28%,#2a0606,#0a0000 72%);overflow:auto;-webkit-overflow-scrolling:touch;padding:12px}
 #finishModal.show{display:flex;align-items:flex-start;justify-content:center}
-.fm-inner{width:100%;max-width:min(540px,95vw);margin:0 auto;padding:6px 0 28px;animation:fmPop .5s cubic-bezier(.2,1.2,.4,1) both}
+.fm-inner{width:100%;max-width:min(620px,95vw);margin:0 auto;padding:6px 0 28px;animation:fmPop .5s cubic-bezier(.2,1.2,.4,1) both}
+.fm-hero{display:block;width:min(100%,440px);max-width:100%;height:auto;margin:0 auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.55);border:2px solid rgba(255,107,0,.35)}
+.fm-summary{text-align:center;margin-bottom:14px}
+.fm-summary h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,7vw,42px);color:#FF6B00;letter-spacing:3px;line-height:1;text-shadow:0 0 24px rgba(255,107,0,.5)}
+.fm-topstats{display:flex;justify-content:center;gap:8px;margin:12px 0;flex-wrap:wrap}
+.fm-topstats>div{flex:1 1 140px;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);border-radius:10px;padding:10px 4px;text-align:center;min-width:110px}
+#fmStep1,#fmStep2{width:100%}
+#fmStep1 label,#fmRankMode label{font-size:clamp(12px,3vw,14px)}
 @keyframes fmPop{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .fm-hero{display:block;width:100%;max-width:440px;margin:0 auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.55);border:2px solid rgba(255,107,0,.35)}
 .fm-summary{text-align:center;margin-bottom:14px}
@@ -308,7 +315,8 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
 #driContinue{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
 .dri-skip{font-size:10px;color:rgba(255,150,60,.55);letter-spacing:2px;margin-top:10px}
 body.mobileUI{overflow:auto;-webkit-overflow-scrolling:touch}
-body.mobileUI #scaleWrap{position:static!important;transform:none!important;left:0!important;top:0!important;width:100%}
+body.mobileUI #scaleWrap{position:static!important;transform:none!important;left:0!important;top:0!important;width:100%;max-width:100%}
+body.mobileUI #introScreen,body.mobileUI #selScreen,body.mobileUI #gameWrap{width:100%;max-width:100%;min-height:100dvh}
 body.mobileUI #introScreen{width:100%;min-height:100dvh}
 body.mobileUI #introCanvas{position:fixed;inset:0;width:100vw!important;height:100dvh!important;z-index:0;object-fit:cover}
 body.mobileUI .intro-content{position:relative;z-index:1;inset:auto;min-height:100dvh;justify-content:center;padding:clamp(16px,4vw,42px) clamp(14px,4vw,42px) clamp(40px,8vh,80px);gap:clamp(5px,1.3vh,14px)}
@@ -356,8 +364,36 @@ body.mobileUI .c-stat{font-size:clamp(9.5px,2.6vw,12px)}
 body.mobileUI .sel-footer{flex-wrap:wrap;gap:clamp(8px,2vw,16px);flex-direction:column}
 body.mobileUI #btnJugar{padding:clamp(12px,2.6vw,16px) 0}
 body.mobileUI #btnLB{width:100%}
+body.mobileUI #gameWrap{display:block!important;position:relative;overflow:hidden}
+body.mobileUI canvas{width:100%!important;height:auto!important;max-width:100%}
+body.mobileUI #touchCtrl{display:block!important}
 @media (min-width:560px){ body.mobileUI .char-card{flex:1 1 calc(33.33% - 12px)} }
 @media (min-width:820px){ body.mobileUI .char-card{flex:1 1 calc(25% - 14px)} }
+@media (max-width:900px){
+  #finishModal{padding:8px}
+  .fm-inner{max-width:100%}
+  .semis-banner{padding:14px 12px}
+  .fm-topstats{gap:8px}
+  .fm-topstats>div{flex:1 1 120px;min-width:110px}
+  .fm-ticket{padding:12px!important}
+  .fmt-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .fmt-row{flex-direction:column;align-items:flex-start;gap:2px}
+  .fmt-lbl,.fmt-val{width:100%;text-align:left;min-width:0}
+  .fmt-token{flex-direction:column;align-items:flex-start}
+  .fmt-permiso-seccion{padding:12px!important}
+  #fmEmail,#fmBossName,#fmName{font-size:14px}
+  #fmGenerate,#fmRegisterName{font-size:20px;padding:14px 0}
+}
+@media (max-width:640px){
+  .fm-mode-row{flex-direction:column}
+  .fm-mode-btn{width:100%}
+  .fm-topstats>div{flex-basis:100%}
+  .fmt-head img{width:36px;height:36px}
+  .fmt-head-text .fht1{font-size:17px}
+  .fmt-head-text .fht2{font-size:9px}
+  .fmt-data-title{font-size:10px}
+  .fmt-btn-action{font-size:14px;padding:10px}
+}
 .portraitInfo{display:none !important;position:fixed;left:0;right:0;z-index:900;pointer-events:none;text-align:center;padding:0 12px}
 @media (orientation:portrait) and (max-width:900px){body.portraitMode .portraitInfo{display:block !important}}
 body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
@@ -500,20 +536,72 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
 }
 
 /* Ticket generado - colores oscuros sobre fondo claro */
-.fm-ticket { background: #fff !important; }
-.fmt-head-text .fht1 { color: #fff !important; }
-.fmt-head-text .fht2 { color: rgba(255,200,100,.85) !important; }
-.fmt-scan-label { color: rgba(123,26,26,.8) !important; }
-.fmt-data { background: #fdf5ee !important; }
-.fmt-data-title { color: rgba(123,26,26,.55) !important; }
-.fmt-lbl { color: rgba(80,20,10,.7) !important; }
-.fmt-val { color: #2a0606 !important; }
+.fm-ticket {
+  background: #fff !important;
+  border: 2px solid #d8a054 !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.16) !important;
+  max-width: 560px !important;
+  margin: 0 auto 14px !important;
+  color: #2a0606 !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+.fmt-head {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px dashed rgba(123,26,26,.24) !important;
+  margin-bottom: 12px !important;
+}
+.fmt-head img {
+  width: 44px !important;
+  height: 44px !important;
+  flex-shrink: 0 !important;
+  border-radius: 8px !important;
+}
+.fmt-head-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+.fmt-head-text .fht1 { color: #7B1A1A !important; font-family: 'Bebas Neue', sans-serif !important; font-size: 20px !important; letter-spacing: 1px !important; font-weight: 700 !important; }
+.fmt-head-text .fht2 { color: #b95e00 !important; font-size: 10px !important; letter-spacing: 1.2px !important; text-transform: uppercase !important; }
+.fmt-qrzone {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 12px 0 !important;
+}
+.fmt-qr-loading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 150px !important;
+  color: #7B1A1A !important;
+  font-size: 13px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+.fmt-scan-label { color: rgba(123,26,26,.8) !important; font-size: 11px !important; letter-spacing: 1px !important; text-align: center !important; display: block !important; line-height: 1.4 !important; }
+.fmt-sep { border: none !important; border-top: 1px solid rgba(123,26,26,.16) !important; margin: 12px 0 !important; }
+.fmt-data { background: #fdf5ee !important; padding: 12px !important; border-radius: 10px !important; }
+.fmt-data-title { color: rgba(123,26,26,.55) !important; font-size: 11px !important; letter-spacing: 1.4px !important; text-transform: uppercase !important; text-align: center !important; margin-bottom: 8px !important; font-weight: 700 !important; }
+.fmt-row { display: flex !important; justify-content: space-between !important; align-items: flex-start !important; gap: 10px !important; padding: 5px 0 !important; border-bottom: 1px solid rgba(123,26,26,.12) !important; font-size: 12px !important; }
+.fmt-lbl { color: rgba(80,20,10,.7) !important; font-weight: 700 !important; min-width: 110px !important; flex-shrink: 0 !important; }
+.fmt-val { color: #2a0606 !important; text-align: right !important; overflow-wrap: anywhere !important; }
 .fmt-val.pts { color: #c84d00 !important; }
 .fmt-val.coins { color: #b8860b !important; }
-.fmt-token .tk-badge { color: #fff !important; background: #7B1A1A !important; }
-.fmt-token .tk-label { color: rgba(123,26,26,.55) !important; }
-.fmt-foot-left { color: #fff !important; }
-.fmt-foot-right { color: rgba(255,200,100,.7) !important; }
+.fmt-token { display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 8px !important; padding-top: 8px !important; flex-wrap: wrap !important; }
+.fmt-token .tk-badge { color: #fff !important; background: #7B1A1A !important; padding: 6px 10px !important; border-radius: 999px !important; font-weight: 700 !important; font-size: 12px !important; letter-spacing: 1px !important; }
+.fmt-token .tk-label { color: rgba(123,26,26,.55) !important; font-size: 9px !important; letter-spacing: 1px !important; text-transform: uppercase !important; }
+.fmt-foot { display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 8px !important; padding-top: 12px !important; margin-top: 6px !important; font-size: 10px !important; text-transform: uppercase !important; letter-spacing: 1.5px !important; color: #7B1A1A !important; }
+.fmt-foot-left { color: #7B1A1A !important; }
+.fmt-foot-right { color: #b95e00 !important; }
 
 /* Sección permiso dentro del ticket */
 .fmt-permiso-seccion { background: #fdf5ee !important; }
@@ -1471,32 +1559,47 @@ if (btnCopy) {
 var btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
   btnDownload.addEventListener('click', function() {
-    var email = document.getElementById('fmTkEmail').textContent || 'Colaborador';
+    var email = (document.getElementById('fmTkEmail').textContent || 'Colaborador').trim();
     var scoreVal = document.getElementById('fmTkPts').textContent || '0 PTS';
     var team = document.getElementById('fmTkTeam').textContent || '';
     var fecha = document.getElementById('fmTkDate').textContent || new Date().toISOString().slice(0,10);
     var token = document.getElementById('fmTkToken').textContent || 'BW';
     var qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-    var w = window.open('', '_blank', 'width=800,height=900,scrollbars=yes');
+    var source = document.getElementById('pdfTemplateSource');
+    if (!source) {
+      alert('No se encontró el contenido del certificado.');
+      return;
+    }
+
+    var clone = source.cloneNode(true);
+    clone.style.display = 'block';
+    clone.style.width = '700px';
+    clone.style.maxWidth = '100%';
+    clone.style.margin = '0 auto';
+    clone.style.boxSizing = 'border-box';
+    clone.querySelector('#pdfEmail').textContent = email;
+    clone.querySelector('#pdfScore').textContent = scoreVal;
+    clone.querySelector('#pdfTeam').textContent = team;
+    clone.querySelector('#pdfDate').textContent = fecha;
+    clone.querySelector('#pdfTokenSpot').textContent = 'CÓDIGO #' + token;
+    var qrSpot = clone.querySelector('#pdfQRSpot');
+    if (qrSpot) {
+      qrSpot.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload) + '" alt="QR" style="width:100%;height:100%;object-fit:contain;">';
+    }
+
+    var w = window.open('', '_blank', 'width=900,height=1000,scrollbars=yes');
     if (!w) {
-      alert('Permite la ventana emergente para descargar el certificado.');
+      alert('Permití las ventanas emergentes para descargar el certificado.');
       return;
     }
 
     var d = w.document;
     d.open();
-    d.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>body{font-family:Arial,sans-serif;background:#fff;color:#1a0500;margin:0;padding:24px}.card{border:6px double #7B1A1A;padding:20px;text-align:center}.title{font-family:Bebas Neue,Arial,sans-serif;color:#7B1A1A;font-size:24px;letter-spacing:2px;margin-bottom:8px}.subtitle{font-family:Bebas Neue,Arial,sans-serif;color:#ff5100;font-size:28px;letter-spacing:2px;margin:10px 0 5px}.meta{font-size:11px;color:#7B1A1A;letter-spacing:1px;text-transform:uppercase;font-weight:bold;margin-bottom:15px}table{width:100%;margin:12px auto;border-collapse:collapse;font-size:12px}td{padding:6px;border-bottom:1px solid rgba(0,0,0,.1)}.label{font-weight:bold;color:#7B1A1A;width:40%}</style></head><body><div class="card"><div class="title">🦬 SOCAZONE BUFFALO BROS</div><div class="subtitle">PERMISO OFICIAL DE AUSENCIA</div><div class="meta">VÁLIDO PARA LAS SEMIFINALES · MUNDIAL 2026</div><p>El Dr. Soca-son certifica que el portador ha completado con éxito todas las metas del torneo y queda autorizado para presenciar las transmisiones correspondientes.</p><table><tr><td class="label">Colaborador:</td><td>' + escapeHtml(email) + '</td></tr><tr><td class="label">Puntaje:</td><td>' + escapeHtml(scoreVal) + '</td></tr><tr><td class="label">Equipo:</td><td>' + escapeHtml(team) + '</td></tr><tr><td class="label">Fecha:</td><td>' + escapeHtml(fecha) + '</td></tr></table><p style="font-size:10px;font-style:italic;color:#ff5100;font-weight:bold;margin-top:12px;">* Se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Inmunidad de alitas incluida.</p></div></body></html>');
+    d.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>@page{size:A4;margin:12mm}body{margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif}.wrap{padding:18px}.card{background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.15);}</style></head><body><div class="wrap"><div class="card">' + clone.outerHTML + '</div></div></body></html>');
     d.close();
+    w.focus();
+    setTimeout(function() { try { w.print(); } catch (e) {} }, 250);
   });
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }
 
 const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
