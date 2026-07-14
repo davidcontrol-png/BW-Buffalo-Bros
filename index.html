@@ -1485,6 +1485,7 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
 
   const emailTemplate = `Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;
   const displayName = formatDisplayName(email);
+  const certViewUrl = 'https://bwbros.netlify.app/canje?token=' + encodeURIComponent(token) + '&email=' + encodeURIComponent(email) + '&preview=1';
   document.getElementById('fmPermisoText').value = emailTemplate;
 
   if (window.BW_EMAILJS_READY && window.emailjs) {
@@ -1502,7 +1503,7 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
       console.info('Correo de permiso omitido; EmailJS no está configurado o falló.', errMail);
     }
   } else {
-    const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nEl certificado también aparece en pantalla al generar el QR.`;
+    const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
     const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
     try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
   }
@@ -1606,8 +1607,8 @@ function showCertificatePreview(html){
   var doc=iframe.contentDocument||iframe.contentWindow.document;
   doc.open();doc.write(html);doc.close();
 }
-var btnDownload = document.getElementById('btnDownloadCert');
-if (btnDownload) {
+var btnDownloads = document.querySelectorAll('#btnDownloadCert');
+btnDownloads.forEach(function(btnDownload) {
   btnDownload.addEventListener('click', function() {
     var email = (document.getElementById('fmTkEmail').textContent || 'Colaborador').trim();
     var scoreVal = document.getElementById('fmTkPts').textContent || '0 PTS';
@@ -1658,7 +1659,7 @@ if (btnDownload) {
     }
     showCertificatePreview(html);
   });
-}
+});
 
 const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
