@@ -1290,17 +1290,32 @@ const btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
 btnDownload.addEventListener('click', () => {
   const email = document.getElementById('fmTkEmail').textContent || '';
-  const scoreVal = document.getElementById('fmTkPts').textContent || score + ' PTS';
-  const team = document.getElementById('fmTkTeam').textContent || SEL.flag + ' ' + SEL.name;
-  const fecha = document.getElementById('fmTkDate').textContent || new Date().toISOString().slice(0, 10);
+  const scoreVal = document.getElementById('fmTkPts').textContent || '0 PTS';
+  const team = document.getElementById('fmTkTeam').textContent || '';
+  const fecha = document.getElementById('fmTkDate').textContent || '';
   const token = document.getElementById('fmTkToken').textContent || 'BW';
   const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
+
+  // Sincronizamos las variables del certificado interno antes de abrir la ventana
+  document.getElementById('pdfEmail').textContent = email;
+  document.getElementById('pdfScore').textContent = scoreVal;
+  document.getElementById('pdfTeam').textContent = team;
+  document.getElementById('pdfDate').textContent = fecha;
+  document.getElementById('pdfTokenSpot').textContent = 'CÓDIGO #' + token;
+  
+  const qrSpot = document.getElementById('pdfQRSpot');
+  if (qrSpot) {
+    qrSpot.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload) + '" width="120" height="120">';
+  }
 
   const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
   if (!win) {
     alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.');
     return;
   }
+
+  const certHtml = document.getElementById('pdfTemplateSource').innerHTML;
+
   win.document.write(
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
 document.addEventListener('keyup',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=false;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=false;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=false;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){keys.jump=false;jumpHeld=false;}});
