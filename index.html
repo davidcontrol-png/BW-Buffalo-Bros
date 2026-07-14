@@ -1488,29 +1488,6 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   const certViewUrl = 'https://bwbros.netlify.app/canje?token=' + encodeURIComponent(token) + '&email=' + encodeURIComponent(email) + '&preview=1';
   document.getElementById('fmPermisoText').value = emailTemplate;
 
-  if (window.BW_EMAILJS_READY && window.emailjs) {
-    try {
-      await emailjs.send("service_default", "template_permit_bw", {
-        to_email: email,
-        boss_name: bossName,
-        score: score,
-        coins: coinCount,
-        team: SEL.name,
-        token: token,
-        message: emailTemplate
-      });
-    } catch (errMail) {
-      console.info('Correo de permiso omitido; EmailJS no está configurado o falló.', errMail);
-    }
-  } else {
-    const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
-    const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
-    try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
-  }
-
-  btn.disabled = false;
-  btn.textContent = '▶ GENERAR QR Y PERMISO';
-
   const payload = 'https://bwbros.netlify.app/canje?id=' + encodeURIComponent(recId) + '&e=' + encodeURIComponent(email) + '&p=' + score + '&m=' + coinCount + '&ev=' + evStr + '&eq=' + encodeURIComponent(SEL.name) + '&f=' + fecha + '&t=' + token;
   window._lastQRPayload = payload;
   
@@ -1543,6 +1520,32 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   
   A.coin();
   document.getElementById('finishModal').scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Enviar email al final, para no interrumpir la generación del certificado ni la vista en móvil.
+  setTimeout(async () => {
+    try {
+      if (window.BW_EMAILJS_READY && window.emailjs) {
+        await emailjs.send("service_default", "template_permit_bw", {
+          to_email: email,
+          boss_name: bossName,
+          score: score,
+          coins: coinCount,
+          team: SEL.name,
+          token: token,
+          message: emailTemplate
+        });
+      } else {
+        const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
+        const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
+        try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
+      }
+    } catch (errMail) {
+      console.info('Correo de permiso omitido; EmailJS no está configurado o falló.', errMail);
+    }
+  }, 250);
+
+  btn.disabled = false;
+  btn.textContent = '▶ GENERAR QR Y PERMISO';
 });
 
 const btnCopy = document.getElementById('btnCopyPermiso');
@@ -1644,7 +1647,7 @@ function buildCertificateHtml(){
   if (qrSpot) {
     qrSpot.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload) + '" alt="QR" style="width:100%;height:100%;object-fit:contain;">';
   }
-  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>@page{size:A4;margin:12mm}body{margin:0;padding:0;background:#f5f5f5;font-family:Arial,sans-serif}.wrap{padding:18px}.card{background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.15);}</style></head><body><div class="wrap"><div class="card">' + clone.outerHTML + '</div></div></body></html>';
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>@page{size:A4;margin:6mm}body{margin:0;padding:0;background:#fff;font-family:Arial,sans-serif}.wrap{padding:0;display:flex;justify-content:center;align-items:flex-start}.card{background:#fff;box-shadow:none;display:block;width:100%;max-width:700px;margin:0 auto}.pdf-cert-border{padding:16px!important;margin:0!important}.pdf-logo-box{font-size:24px!important;margin-bottom:4px!important}.pdf-title{font-size:28px!important;margin:8px 0 2px 0!important}.pdf-subtitle{font-size:12px!important;margin-bottom:14px!important}p{font-size:12px!important;line-height:1.4!important;margin:10px 0!important}.pdf-data-table{width:94%!important;margin:12px auto!important;font-size:13px!important}.pdf-data-table td{padding:7px!important}.pdf-data-table .label{font-size:12px!important}.pdf-data-table .value{font-size:12px!important}#pdfPermitText{font-size:10px!important;line-height:1.3!important}#pdfQRSpot{width:72px!important;height:72px!important}#pdfTokenSpot{font-size:9px!important}</style></head><body><div class="wrap"><div class="card">' + clone.outerHTML + '</div></div></body></html>';
 }
 
 var btnDownloads = document.querySelectorAll('#btnDownloadCert');
