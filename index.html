@@ -229,6 +229,8 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
   text-shadow: 0 2px 8px rgba(0,0,0,1) !important;
 }
 
+</style>
+
 <!-- Certificado visible en pantalla para descarga manual -->
 <div id="certPreviewBox" style="display:none; margin-top:14px; background:#2a0a0a; border:2px solid #ff7700; border-radius:12px; padding:12px;">
   <div style="color:#ff9f43; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; text-align:center; margin-bottom:10px;">👁️ TU CERTIFICADO OFICIAL</div>
@@ -262,7 +264,9 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
     </div>
   </div>
   <button id="btnDownloadCert" style="display:block; width:100%; margin-top:10px; padding:14px; background:linear-gradient(135deg,#FF6B00,#c84d00); color:#fff; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; cursor:pointer;">📥 GUARDAR / IMPRIMIR CERTIFICADO</button>
-</div>ear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
+</div>
+
+<style>
 
 /* --- Nuevos Estilos Unificados para el Permiso de Trabajo --- */
 .fmt-permiso-seccion { background: #fdf5ee; border-top: 2.5px dashed rgba(123,26,26,.2); padding: 16px 18px; text-align: left; }
@@ -1466,21 +1470,34 @@ if (btnCopy) {
 
 var btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
-btnDownload.addEventListener('click', function() {
-  var email = document.getElementById('fmTkEmail').textContent || 'Colaborador';
-  var scoreVal = document.getElementById('fmTkPts').textContent || '0 PTS';
-  var team = document.getElementById('fmTkTeam').textContent || '';
-  var fecha = document.getElementById('fmTkDate').textContent || new Date().toISOString().slice(0,10);
-  var token = document.getElementById('fmTkToken').textContent || 'BW';
-  var qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-  var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload);
+  btnDownload.addEventListener('click', function() {
+    var email = document.getElementById('fmTkEmail').textContent || 'Colaborador';
+    var scoreVal = document.getElementById('fmTkPts').textContent || '0 PTS';
+    var team = document.getElementById('fmTkTeam').textContent || '';
+    var fecha = document.getElementById('fmTkDate').textContent || new Date().toISOString().slice(0,10);
+    var token = document.getElementById('fmTkToken').textContent || 'BW';
+    var qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
+    var w = window.open('', '_blank', 'width=800,height=900,scrollbars=yes');
+    if (!w) {
+      alert('Permite la ventana emergente para descargar el certificado.');
+      return;
+    }
 
-  var w = window.open('', '_blank', 'width=800,height=900,scrollbars=yes');
-  if (!w) { alert('Permite la ventana emergente para descargar el certificado.'); return; }
+    var d = w.document;
+    d.open();
+    d.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>body{font-family:Arial,sans-serif;background:#fff;color:#1a0500;margin:0;padding:24px}.card{border:6px double #7B1A1A;padding:20px;text-align:center}.title{font-family:Bebas Neue,Arial,sans-serif;color:#7B1A1A;font-size:24px;letter-spacing:2px;margin-bottom:8px}.subtitle{font-family:Bebas Neue,Arial,sans-serif;color:#ff5100;font-size:28px;letter-spacing:2px;margin:10px 0 5px}.meta{font-size:11px;color:#7B1A1A;letter-spacing:1px;text-transform:uppercase;font-weight:bold;margin-bottom:15px}table{width:100%;margin:12px auto;border-collapse:collapse;font-size:12px}td{padding:6px;border-bottom:1px solid rgba(0,0,0,.1)}.label{font-weight:bold;color:#7B1A1A;width:40%}</style></head><body><div class="card"><div class="title">🦬 SOCAZONE BUFFALO BROS</div><div class="subtitle">PERMISO OFICIAL DE AUSENCIA</div><div class="meta">VÁLIDO PARA LAS SEMIFINALES · MUNDIAL 2026</div><p>El Dr. Soca-son certifica que el portador ha completado con éxito todas las metas del torneo y queda autorizado para presenciar las transmisiones correspondientes.</p><table><tr><td class="label">Colaborador:</td><td>' + escapeHtml(email) + '</td></tr><tr><td class="label">Puntaje:</td><td>' + escapeHtml(scoreVal) + '</td></tr><tr><td class="label">Equipo:</td><td>' + escapeHtml(team) + '</td></tr><tr><td class="label">Fecha:</td><td>' + escapeHtml(fecha) + '</td></tr></table><p style="font-size:10px;font-style:italic;color:#ff5100;font-weight:bold;margin-top:12px;">* Se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Inmunidad de alitas incluida.</p></div></body></html>');
+    d.close();
+  });
+}
 
-  var d = w.document;
- d.open();
- var html = '
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
