@@ -1282,38 +1282,15 @@ if (btnCopy) {
 const btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
 btnDownload.addEventListener('click', () => {
-  const email = document.getElementById('pdfEmail').textContent || '';
-  const scoreVal = document.getElementById('pdfScore').textContent || score + ' PTS';
-  const team = document.getElementById('pdfTeam').textContent || SEL.flag + ' ' + SEL.name;
-  const fecha = document.getElementById('pdfDate').textContent || new Date().toISOString().slice(0,10);
-  const token = document.getElementById('fmTkToken').textContent || 'BW';
-  const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-  const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
-  if (!win) { alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.'); return; }
-  win.document.write(
-document.getElementById('fmModeRank').addEventListener('click',()=>{document.getElementById('fmModeRank').classList.add('active');document.getElementById('fmModeQR').classList.remove('active');document.getElementById('fmRankMode').style.display='block';document.getElementById('fmQRMode').style.display='none';});
-
-document.getElementById('fmRegisterName').addEventListener('click',async()=>{
-  const nameInput=document.getElementById('fmName');
-  const name=nameInput.value.trim();
-  const err=document.getElementById('fmNameError');
-  if(!name||name.length<2){err.textContent='Ingresá un nombre de al menos 2 caracteres 🦬';nameInput.focus();return;}
-  err.textContent='';
-  const btn=document.getElementById('fmRegisterName');btn.disabled=true;btn.textContent='⏳ GUARDANDO…';
-  const fecha=new Date().toISOString().slice(0,10),token=makeToken(name,score,fecha);
-  try{await fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,score,coins:coinCount,team:SEL.name,gender:SEL_GENDER||'M',events:eventStats,mode:'rank',token})});}catch(e){}
-  btn.disabled=false;btn.textContent='🏆 GUARDAR EN RANKING';
-  const lb=getLB();
-  for(let i=lb.length-1;i>=0;i--){if(lb[i].s===score&&lb[i].f===SEL.flag){lb[i].n=name;lb[i].g=SEL_GENDER||'M';lb[i].team=SEL.name;localStorage.setItem('socaLB',JSON.stringify(lb));break;}}
-  document.getElementById('frDisplayName').textContent=name.toUpperCase();
-  document.getElementById('frDisplayScore').textContent=score.toLocaleString('es');
-  document.getElementById('frDisplayEvents').textContent='⚽ '+eventStats.poste+'  🟥 '+eventStats.roja+'  🥅 '+eventStats.penal+'  🤝 '+eventStats.empate;
-  document.getElementById('fmStep1').style.display='none';
-  document.getElementById('fmStep3').style.display='block';
-  A.hofPlaque();
-  document.getElementById('finishModal').scrollTo({top:0,behavior:'smooth'});
-});
-document.getElementById('fmRestartRank').addEventListener('click',()=>{document.getElementById('finishModal').classList.remove('show');goToSelect();});
+const email = document.getElementById('pdfEmail').textContent || '';
+const scoreVal = document.getElementById('pdfScore').textContent || score + ' PTS';
+const team = document.getElementById('pdfTeam').textContent || SEL.flag + ' ' + SEL.name;
+const fecha = document.getElementById('pdfDate').textContent || new Date().toISOString().slice(0,10);
+const token = document.getElementById('fmTkToken').textContent || 'BW';
+const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
+const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
+if (!win) { alert('Tu navegador bloqueo la ventana emergente. Permitila para descargar el certificado.'); return; }
+win.document.write(`
 
 const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
