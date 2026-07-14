@@ -8,8 +8,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
   (function(){
-    // Inicialización del servicio de correo con clave de pruebas (se puede cambiar luego por la tuya)
-    emailjs.init("user_bw_bros_production_key");
+    // Inicialización de EmailJS de forma segura. Ingresa tu clave pública real aquí si posees una.
+    try { emailjs.init("user_bw_bros_production_key"); } catch(e){ console.warn("EmailJS sin iniciar."); }
   })();
 </script>
 <style>
@@ -146,10 +146,141 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
 #fmBossName:focus{border-color:#FF6B00;box-shadow:0 0 14px rgba(255,107,0,.3)}
 #fmError{color:#ff7a5c;font-size:clamp(11px,3vw,13px);min-height:14px;margin-top:6px}
 
-/* --- Banner de Campaña de Semifinales --- */
-.semis-banner { background: linear-gradient(135deg, #7B1A1A, #ff5100); border: 2px solid #FF6B00; border-radius: 10px; padding: 10px; text-align: center; margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: #fff; box-shadow: 0 0 15px rgba(255,107,0,0.4); }
-.semis-banner h3 { font-size: 20px; line-height: 1; margin: 0; color: #fff; }
-.semis-banner p { font-family: 'Oswald', sans-serif; font-size: 11px; margin: 3px 0 0 0; color: #ffd700; font-weight: 600; }
+/* --- Banner de Campaña de Semifinales Super Gráfico --- */
+.semis-banner {
+  background: radial-gradient(circle at center, #bf1e0f 20%, #4a0202 100%);
+  border: 4px solid #ff7700;
+  border-radius: 16px;
+  padding: 20px 14px;
+  text-align: center;
+  margin-bottom: 22px;
+  box-shadow: 0 0 30px #ff3c00, inset 0 0 25px rgba(255, 119, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  animation: neonBorderPulse 1.5s infinite alternate;
+}
+.semis-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 300%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: skewX(-20deg);
+  animation: scanSweeper 4.5s infinite linear;
+}
+.semis-banner-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 7vw, 36px);
+  color: #ffffff;
+  letter-spacing: 4px;
+  line-height: 1;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 10px #ff7700, 0 0 20px #ff3c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.semis-banner-sub {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(11px, 2.8vw, 14px);
+  color: #ffeb3b;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+}
+@keyframes neonBorderPulse {
+  0% { border-color: #ff3c00; box-shadow: 0 0 20px #ff3c00, inset 0 0 15px rgba(255, 60, 0, 0.4); }
+  100% { border-color: #ffcc00; box-shadow: 0 0 35px #ffcc00, inset 0 0 30px rgba(255, 204, 0, 0.6); }
+}
+@keyframes scanSweeper {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+/* --- Estructura Oculta del Certificado para la Descarga PDF --- */
+#pdfTemplateSource {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 700px;
+  background: #fff;
+  color: #1a0500;
+  padding: 40px;
+  font-family: 'Oswald', 'Arial', sans-serif;
+  border: 15px double #7B1A1A;
+}
+.pdf-cert-border {
+  border: 3px solid #ff7700;
+  padding: 30px;
+  text-align: center;
+}
+.pdf-logo-box {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: #7B1A1A;
+  letter-spacing: 3px;
+  margin-bottom: 5px;
+}
+.pdf-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: #ff5100;
+  letter-spacing: 4px;
+  margin: 15px 0 5px 0;
+  text-transform: uppercase;
+}
+.pdf-subtitle {
+  font-size: 16px;
+  color: #7B1A1A;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+.pdf-line {
+  border: none;
+  border-top: 2px solid rgba(123,26,26,0.3);
+  margin: 15px auto;
+  width: 80%;
+}
+.pdf-data-table {
+  width: 90%;
+  margin: 25px auto;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+.pdf-data-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  text-align: left;
+}
+.pdf-data-table td.label {
+  font-weight: bold;
+  color: #7B1A1A;
+  width: 40%;
+}
+.pdf-data-table td.value {
+  color: #333;
+}
+.pdf-signature-section {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+}
+.pdf-sig-box {
+  width: 40%;
+  text-align: center;
+}
+.pdf-sig-line {
+  border-top: 2px solid #7B1A1A;
+  margin-top: 50px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 #fmGenerate{width:100%;margin-top:12px;padding:16px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
 #fmStep2{display:none}
 .fm-mode-row{display:flex;gap:10px;margin-bottom:16px}
@@ -189,7 +320,7 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
 .fmt-qr-loading .qrl-spin{font-size:32px;animation:spin .8s linear infinite}
 .fmt-qr-loading .qrl-txt{font-size:clamp(10px,2.8vw,13px);color:rgba(123,26,26,.6);letter-spacing:1px}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-#fmRestart{width:100%;padding:16px 0;border:none;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
+#fmRestart{width:100%;padding:16px 0;border:none;border-radius:12px;background:linear-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}-gradient(135deg,#FF6B00,#c84d00);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5.5vw,26px);letter-spacing:3px;cursor:pointer;box-shadow:0 6px 16px rgba(255,107,0,.4)}
 
 /* --- Nuevos Estilos Unificados para el Permiso de Trabajo --- */
 .fmt-permiso-seccion { background: #fdf5ee; border-top: 2.5px dashed rgba(123,26,26,.2); padding: 16px 18px; text-align: left; }
@@ -455,32 +586,64 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
           <div class="fmt-token"><span class="tk-label">TOKEN</span><span class="tk-badge" id="fmTkToken">——</span><span class="tk-label">VERIFICACIÓN</span></div>
         </div>
         
-        <!-- Sección de Permiso Integrada al final del Ticket -->
-        <div class="fmt-permiso-seccion">
-          <h4>📋 PERMISO PARA TU JEFE/A:</h4>
-          <textarea id="fmPermisoText" class="fmt-textarea" readonly></textarea>
-          <button class="fmt-btn-action fmt-btn-copy" id="btnCopyPermiso">📋 COPIAR MENSAJE</button>
-          <button class="fmt-btn-action fmt-btn-download" id="btnDownloadCert">📥 DESCARGAR CERTIFICADO OFICIAL</button>
+ <!-- Sección de Permiso Integrada al final del Ticket -->
+        <div class="fmt-permiso-seccion" style="background:#fdf5ee; border-top:2.5px dashed rgba(123,26,26,.2); padding:16px 18px; text-align:left;">
+          <h4 style="font-family:'Bebas Neue',sans-serif; font-size:18px; color:#7B1A1A; letter-spacing:1px; margin-bottom:6px;">📋 PERMISO PARA TU JEFE/A:</h4>
+          <textarea id="fmPermisoText" class="fmt-textarea" readonly style="width:100%; height:110px; background:#fff; border:1.5px solid rgba(123,26,26,0.25); border-radius:8px; color:#2a0606; padding:10px; font-family:'Oswald',sans-serif; font-size:11.5px; line-height:1.4; resize:none; outline:none; margin-bottom:8px;"></textarea>
+          <button class="fmt-btn-action fmt-btn-copy" id="btnCopyPermiso" style="display:block; width:100%; padding:12px; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:2px; cursor:pointer; text-align:center; text-transform:uppercase; margin-top:6px; background:#7B1A1A; color:#fff;">📋 COPIAR MENSAJE</button>
+          <button class="fmt-btn-action fmt-btn-download" id="btnDownloadCert" style="display:block; width:100%; padding:12px; border:none; border-radius:8px; font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:2px; cursor:pointer; text-align:center; text-transform:uppercase; margin-top:6px; background:#FF6B00; color:#fff; margin-bottom:12px;">📥 DESCARGAR CERTIFICADO OFICIAL</button>
         </div>
 
         <div class="fmt-foot"><span class="fmt-foot-left">🦬 MOSTRÁ EN CAJA</span><span class="fmt-foot-right">SOCAZONEBW.COM</span></div>
       </div>
       <button id="fmRestart">🔄 JUGAR DE NUEVO</button>
-      <div class="fm-foot-note">PUNTOS LEAL ACUMULAN EN TODOS LOS BUFFALO WINGS®</div>
-    </div>
-    <div id="fmStep3">
-      <div class="fm-registered">
-        <div class="fr-trophy">🏆</div>
-        <div class="fr-reg-title">¡EN EL RANKING!</div>
-        <div class="fr-reg-name" id="frDisplayName">JUGADOR</div>
-        <div>
-          <span class="fr-reg-score" id="frDisplayScore">0</span>
-          <span class="fr-pts-lbl">PUNTOS</span>
+
+      <!-- Estructura Escondida del Certificado para la Conversión PDF -->
+      <div id="pdfTemplateSource" style="position: absolute; left: -9999px; top: -9999px; width: 700px; background: #fff; color: #1a0500; padding: 40px; font-family: 'Oswald', 'Arial', sans-serif; border: 15px double #7B1A1A;">
+        <div class="pdf-cert-border" style="border: 3px solid #ff7700; padding: 30px; text-align: center;">
+          <div class="pdf-logo-box" style="font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #7B1A1A; letter-spacing: 3px; margin-bottom: 5px;">🦬 SOCAZONE BUFFALO BROS</div>
+          <div class="pdf-title" style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: #ff5100; letter-spacing: 4px; margin: 15px 0 5px 0; text-transform: uppercase;">PERMISO OFICIAL DE AUSENCIA</div>
+          <div class="pdf-subtitle" style="font-size: 16px; color: #7B1A1A; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-bottom: 25px;">VÁLIDO PARA LAS SEMIFINALES · MUNDIAL 2026</div>
+          <hr class="pdf-line" style="border: none; border-top: 2px solid rgba(123,26,26,0.3); margin: 15px auto; width: 80%;">
+          <p style="font-size: 15px; line-height: 1.6; margin: 20px 0; padding: 0 10px; color:#1a0500;">
+            El Dr. Soca-son, Neurocientífico Jefe de la Socazón Anterior de Buffalo Wings®, certifica que el portador ha completado con éxito todas las metas del torneo y queda autorizado para presenciar las transmisiones correspondientes:
+          </p>
+          <table class="pdf-data-table" style="width: 90%; margin: 25px auto; border-collapse: collapse; font-size: 16px;">
+            <tr>
+              <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Colaborador:</td>
+              <td class="value" id="pdfEmail" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
+            </tr>
+            <tr>
+              <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Puntaje Obtenido:</td>
+              <td class="value" id="pdfScore" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
+            </tr>
+            <tr>
+              <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Equipo:</td>
+              <td class="value" id="pdfTeam" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
+            </tr>
+            <tr>
+              <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Fecha de Emisión:</td>
+              <td class="value" id="pdfDate" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
+            </tr>
+          </table>
+          <p style="font-size: 13.5px; font-style: italic; color: #ff5100; font-weight: bold; margin: 20px 0;">
+            * Ha activado de forma exitosa su ínsula anterior, por lo que se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Se adjunta inmunidad de alitas si asiste con su respectivo jefe/a.
+          </p>
+          <div class="pdf-signature-section" style="display: flex; justify-content: space-around; margin-top: 40px;">
+            <div class="pdf-sig-box" style="width: 40%; text-align: center;">
+              <div id="pdfQRSpot" style="width:120px; height:120px; margin:0 auto; background:#eee;"></div>
+              <div style="font-size:10px; margin-top:5px; font-weight:bold; letter-spacing:1px; color:#1a0500;" id="pdfTokenSpot">CÓDIGO #——</div>
+            </div>
+            <div class="pdf-sig-box" style="width: 40%; text-align: center; display: flex; flex-direction: column; justify-content: flex-end;">
+              <div style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #7B1A1A; margin-bottom: -15px;">Dr. Soca-Son</div>
+              <div class="pdf-sig-line" style="border-top: 2px solid #7B1A1A; margin-top: 50px; font-weight: bold; font-size: 14px; color:#1a0500;">Dr. Soca-Son<br><span style="font-size:11px; font-weight:normal; color:#666;">(Neuro-Socazón)</span></div>
+            </div>
+          </div>
+          <p style="font-size: 10px; color: #777; margin-top: 30px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; text-align:center;">
+            * Buffalo Wings® no se hace responsable si tu jefe dice que no. Pero las alitas van a estar brutales en restaurante.
+          </p>
         </div>
-        <div class="fr-reg-events" id="frDisplayEvents">—</div>
-        <div class="fr-reg-note">Guardado en este dispositivo · Para canje con premios elegí QR 📷</div>
       </div>
-      <button id="fmRestartRank">🔄 JUGAR DE NUEVO</button>
       <div class="fm-foot-note">¿QUERÉS EL QR? VOLVÉ Y ELEGÍ "QR DE CANJE"</div>
     </div>
   </div>
@@ -1027,7 +1190,7 @@ function advanceLevel(){levelEndReady=false;lvlEndAnim=0;if(levelNum>=LEVEL_DEFS
 function makeToken(email,pts,fecha){const str=email.toLowerCase()+'|'+pts+'|'+fecha+'|bw2026';let h=0x811c9dc5>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return String(h%90000+10000);}
 function showFinishModal(){currentScreen='finish';document.body.classList.remove('gameActive','portraitMode');document.documentElement.style.overflow='auto';document.body.style.overflow='auto';if(!scoreSaved){scoreSaved=true;saveLB();}A.stopMusic();A.victoryFanfare();document.getElementById('fmScore').textContent=score;document.getElementById('fmCoins').textContent=coinCount;document.getElementById('fmTeam').innerHTML=TEAM_ICONS[SEL.name]?'<img src="'+TEAM_ICONS[SEL.name]+'" style="width:36px;height:36px;object-fit:contain;vertical-align:middle">':SEL.flag;document.getElementById('fmStep1').style.display='block';document.getElementById('fmStep2').style.display='none';document.getElementById('fmStep3').style.display='none';document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';document.getElementById('fmEmail').value='';document.getElementById('fmError').textContent='';document.getElementById('fmName').value='';document.getElementById('fmNameError').textContent='';document.getElementById('finishModal').classList.add('show');}
 function buildQR(payload){const loading=document.getElementById('fmQRLoading'),cnv=document.getElementById('fmQRCanvas');loading.style.display='flex';cnv.style.display='none';const dpr=Math.min(window.devicePixelRatio||1,3),S=360;cnv.width=S*dpr;cnv.height=S*dpr;cnv.style.width=S+'px';cnv.style.height=S+'px';const ctx=cnv.getContext('2d');ctx.scale(dpr,dpr);const img=new Image();img.onload=()=>{loading.style.display='none';cnv.style.display='block';ctx.imageSmoothingEnabled=false;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.drawImage(img,8,8,S-16,S-16);if(FAVI_OK){const ls=46,lx=S/2-ls/2,ly=S/2-ls/2;ctx.fillStyle='#fff';ctx.fillRect(lx-4,ly-4,ls+8,ls+8);ctx.imageSmoothingEnabled=true;ctx.drawImage(FAVI,lx,ly,ls,ls);}};img.onerror=()=>{loading.style.display='none';cnv.style.display='block';ctx.imageSmoothingEnabled=true;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.fillStyle='#7B1A1A';ctx.fillRect(0,0,S,46);ctx.fillStyle='#fff';ctx.font='bold 16px Oswald,Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('BUFFALO WINGS® · CANJE',S/2,23);ctx.fillStyle='#1a0500';ctx.font='13px Oswald,Arial';ctx.textBaseline='alphabetic';payload.replace('https://bwbros.netlify.app/canje?','').split('&').forEach((l,i)=>ctx.fillText(l.slice(0,38),S/2,78+i*24));ctx.fillStyle='#7B1A1A';ctx.fillRect(0,S-40,S,40);ctx.fillStyle='#fff';ctx.font='bold 12px Oswald,Arial';ctx.textBaseline='middle';ctx.fillText('MOSTRÁ EN CAJA · bwbros.netlify.app',S/2,S-20);};img.src='https://api.qrserver.com/v1/create-qr-code/?size=720x720&margin=4&ecc=M&data='+encodeURIComponent(payload);}
-document.getElementById('fmGenerate').addEventListener('click',async()=>{const emailInput=document.getElementById('fmEmail'),email=emailInput.value.trim(),err=document.getElementById('fmError'),bossInput=document.getElementById('fmBossName'),bossName=bossInput.value.trim()||'Jefe/a';if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Ingresá un correo corporativo válido 🦬';emailInput.focus();return;}err.textContent='';const btn=document.getElementById('fmGenerate');btn.disabled=true;btn.textContent='⏳ PROCESANDO…';const fecha=new Date().toISOString().slice(0,10),token=makeToken(email,score,fecha);const evStr='p'+eventStats.poste+'r'+eventStats.roja+'n'+eventStats.penal+'e'+eventStats.empate;let recId=token;try{const r=await fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name:email.split('@')[0].slice(0,24),score,coins:coinCount,team:SEL.name,gender:SEL_GENDER||'M',events:eventStats,mode:'qr_permiso',boss:bossName,token})});if(r.ok)recId=(await r.json()).id;}catch(e){}const emailTemplate=`Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;document.getElementById('fmPermisoText').value=emailTemplate;try{await emailjs.send("service_default","template_permit_bw",{to_email:email,boss_name:bossName,score:score,coins:coinCount,team:SEL.name,token:token,message:emailTemplate});}catch(errMail){console.warn('Simulando envio de correo:',errMail);}btn.disabled=false;btn.textContent='▶ GENERAR QR Y PERMISO';const payload='https://bwbros.netlify.app/canje?id='+encodeURIComponent(recId)+'&e='+encodeURIComponent(email)+'&p='+score+'&m='+coinCount+'&ev='+evStr+'&eq='+encodeURIComponent(SEL.name)+'&f='+fecha+'&t='+token;buildQR(payload);document.getElementById('fmTkEmail').textContent=email;document.getElementById('fmTkPts').textContent=score.toLocaleString('es')+' PTS';document.getElementById('fmTkCoins').textContent=coinCount+' 🪙';document.getElementById('fmTkEvts').textContent='⚽'+eventStats.poste+' 🟥'+eventStats.roja+' 🥅'+eventStats.penal+' 🤝'+eventStats.empate;document.getElementById('fmTkTeam').textContent=SEL.flag+' '+SEL.name;document.getElementById('fmTkDate').textContent=fecha;document.getElementById('fmTkToken').textContent=token;document.getElementById('fmStep1').style.display='none';document.getElementById('fmStep2').style.display='block';A.coin();document.getElementById('finishModal').scrollTo({top:0,behavior:'smooth'});});document.getElementById('btnCopyPermiso').addEventListener('click',()=>{const textarea=document.getElementById('fmPermisoText');textarea.select();document.execCommand('copy');const btn=document.getElementById('btnCopyPermiso');btn.textContent='¡COPIADO CON ÉXITO! 📋';setTimeout(()=>{btn.textContent='📋 COPIAR MENSAJE';},2000);});document.getElementById('btnDownloadCert').addEventListener('click',()=>{const btn=document.getElementById('btnDownloadCert');btn.textContent='⏳ GENERANDO PDF…';btn.disabled=true;const element=document.querySelector('.fm-ticket');const opt={margin:0.2,filename:`Permiso_Semifinales.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'letter',orientation:'portrait'}};html2pdf().set(opt).from(element).save().then(()=>{btn.textContent='📥 DESCARGAR CERTIFICADO OFICIAL';btn.disabled=false;}).catch(e=>{btn.textContent='📥 REINTENTAR DESCARGA';btn.disabled=false;alert('Error al generar PDF: '+e.message);});});
+document.getElementById('fmGenerate').addEventListener('click',async()=>{const emailInput=document.getElementById('fmEmail'),email=emailInput.value.trim(),err=document.getElementById('fmError'),bossInput=document.getElementById('fmBossName'),bossName=bossInput.value.trim()||'Jefe/a';if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Ingresá un correo corporativo válido 🦬';emailInput.focus();return;}err.textContent='';const btn=document.getElementById('fmGenerate');btn.disabled=true;btn.textContent='⏳ PROCESANDO…';const fecha=new Date().toISOString().slice(0,10),token=makeToken(email,score,fecha);const evStr='p'+eventStats.poste+'r'+eventStats.roja+'n'+eventStats.penal+'e'+eventStats.empate;let recId=token;try{const r=await fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,name:email.split('@')[0].slice(0,24),score,coins:coinCount,team:SEL.name,gender:SEL_GENDER||'M',events:eventStats,mode:'qr_permiso',boss:bossName,token})});if(r.ok)recId=(await r.json()).id;}catch(e){}const emailTemplate=`Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;document.getElementById('fmPermisoText').value=emailTemplate;try{await emailjs.send("service_default","template_permit_bw",{to_email:email,boss_name:bossName,score:score,coins:coinCount,team:SEL.name,token:token,message:emailTemplate});}catch(errMail){console.warn('Simulando envio de correo:',errMail);}btn.disabled=false;btn.textContent='▶ GENERAR QR Y PERMISO';const payload='https://bwbros.netlify.app/canje?id='+encodeURIComponent(recId)+'&e='+encodeURIComponent(email)+'&p='+score+'&m='+coinCount+'&ev='+evStr+'&eq='+encodeURIComponent(SEL.name)+'&f='+fecha+'&t='+token;buildQR(payload);document.getElementById('fmTkEmail').textContent=email;document.getElementById('fmTkPts').textContent=score.toLocaleString('es')+' PTS';document.getElementById('fmTkCoins').textContent=coinCount+' 🪙';document.getElementById('fmTkEvts').textContent='⚽'+eventStats.poste+' 🟥'+eventStats.roja+' 🥅'+eventStats.penal+' 🤝'+eventStats.empate;document.getElementById('fmTkTeam').textContent=SEL.flag+' '+SEL.name;document.getElementById('fmTkDate').textContent=fecha;document.getElementById('fmTkToken').textContent=token;document.getElementById('fmStep1').style.display='none';document.getElementById('fmStep2').style.display='block';A.coin();document.getElementById('finishModal').scrollTo({top:0,behavior:'smooth'});});document.getElementById('btnCopyPermiso').addEventListener('click',()=>{const textarea=document.getElementById('fmPermisoText');textarea.select();document.execCommand('copy');const btn=document.getElementById('btnCopyPermiso');btn.textContent='¡COPIADO CON ÉXITO! 📋';setTimeout(()=>{btn.textContent='📋 COPIAR MENSAJE';},2000);});document.getElementById('btnDownloadCert').addEventListener('click',()=>{const btn=document.getElementById('btnDownloadCert');btn.textContent='⏳ GENERANDO PDF…';btn.disabled=true;const email=document.getElementById('fmEmail').value.trim();document.getElementById('pdfEmail').textContent=email;document.getElementById('pdfScore').textContent=score.toLocaleString('es')+' PTS ('+coinCount+' 🪙)';document.getElementById('pdfTeam').textContent=SEL.flag+' '+SEL.name;document.getElementById('pdfDate').textContent=new Date().toISOString().slice(0,10);const token=document.getElementById('fmTkToken').textContent;document.getElementById('pdfTokenSpot').textContent='CÓDIGO #'+(token||'BW');const qrSpot=document.getElementById('pdfQRSpot');qrSpot.innerHTML='';const clonedQR=document.getElementById('fmQRCanvas');if(clonedQR){const img=new Image();img.src=clonedQR.toDataURL('image/png');img.style.width='100px';img.style.height='100px';img.style.display='block';img.style.margin='10px auto';qrSpot.appendChild(img);}const element=document.getElementById('pdfTemplateSource');const opt={margin:0.2,filename:`Permiso_Semifinales_${token||'BW'}.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'in',format:'letter',orientation:'portrait'}};html2pdf().set(opt).from(element).save().then(()=>{btn.textContent='📥 DESCARGAR CERTIFICADO OFICIAL';btn.disabled=false;}).catch(e=>{btn.textContent='📥 REINTENTAR DESCARGA';btn.disabled=false;alert('Error al generar PDF: '+e.message);});});
 document.getElementById('fmRestart').addEventListener('click',()=>{document.getElementById('finishModal').classList.remove('show');goToSelect();});
 
 document.getElementById('fmModeQR').addEventListener('click',()=>{document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';});
