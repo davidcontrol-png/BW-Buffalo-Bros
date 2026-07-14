@@ -8,8 +8,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
   (function(){
-    // Inicialización de EmailJS de forma segura. Ingresa tu clave pública real aquí si posees una.
-    try { emailjs.init("user_bw_bros_production_key"); } catch(e){ console.warn("EmailJS sin iniciar."); }
+    window.BW_EMAILJS_PUBLIC_KEY = (window.BW_EMAILJS_PUBLIC_KEY || '').trim();
+    window.BW_EMAILJS_ENABLED = !!window.BW_EMAILJS_PUBLIC_KEY && !window.BW_EMAILJS_PUBLIC_KEY.includes('placeholder') && !window.BW_EMAILJS_PUBLIC_KEY.includes('production_key');
+    window.BW_EMAILJS_READY = false;
+    try {
+      if (window.BW_EMAILJS_ENABLED && window.emailjs) {
+        emailjs.init(window.BW_EMAILJS_PUBLIC_KEY);
+        window.BW_EMAILJS_READY = true;
+      }
+    } catch (e) {
+      window.BW_EMAILJS_READY = false;
+    }
   })();
 </script>
 <style>
@@ -242,7 +251,7 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
 <div id="certPreviewBox" style="display:none; margin-top:14px; background:#2a0a0a; border:2px solid #ff7700; border-radius:12px; padding:12px;">
   <div style="color:#ff9f43; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; text-align:center; margin-bottom:10px;">👁️ TU CERTIFICADO OFICIAL</div>
   <div style="background:#fff; border-radius:8px; padding:8px; max-height:420px; overflow-y:auto;">
-    <div id="pdfTemplateSource" style="width:100%; background:#fff; color:#1a0500; padding:20px; font-family:'Oswald','Arial',sans-serif; border:6px double #7B1A1A; box-sizing:border-box;">
+    <div id="pdfPreviewSource" style="width:100%; background:#fff; color:#1a0500; padding:20px; font-family:'Oswald','Arial',sans-serif; border:6px double #7B1A1A; box-sizing:border-box;">
       <div style="border:2px solid #ff7700; padding:15px; text-align:center;">
         <div style="font-family:'Bebas Neue',sans-serif; font-size:22px; color:#7B1A1A; letter-spacing:2px; margin-bottom:5px;">🦬 SOCAZONE BUFFALO BROS</div>
         <div style="font-family:'Bebas Neue',sans-serif; font-size:26px; color:#ff5100; letter-spacing:2px; margin:10px 0 5px; text-transform:uppercase; line-height:1.1;">PERMISO OFICIAL DE AUSENCIA</div>
@@ -251,10 +260,15 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
         <p style="font-size:11px; line-height:1.5; margin:12px 0; color:#1a0500;">El Dr. Soca-son certifica que el portador ha completado con éxito todas las metas del torneo y queda autorizado para presenciar las transmisiones correspondientes:</p>
         <table style="width:95%; margin:12px auto; border-collapse:collapse; font-size:12px;">
           <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A; width:40%;">Colaborador:</td><td id="pdfEmail" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
+          <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Nombre:</td><td id="pdfName" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
           <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Puntaje:</td><td id="pdfScore" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
           <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Equipo:</td><td id="pdfTeam" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
           <tr><td style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); font-weight:bold; color:#7B1A1A;">Fecha:</td><td id="pdfDate" style="padding:6px; border-bottom:1px solid rgba(0,0,0,.1); color:#333;">—</td></tr>
         </table>
+        <div style="margin:10px auto 0; width:95%; text-align:left; background:#fff7ee; border:1px solid rgba(123,26,26,0.2); border-radius:8px; padding:8px; color:#1a0500;">
+          <div style="font-weight:bold; color:#7B1A1A; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px; font-size:10px;">Mensaje de permiso:</div>
+          <div id="pdfPermitText" style="white-space:pre-wrap; font-size:10px; line-height:1.4; color:#333;">—</div>
+        </div>
         <p style="font-size:10px; font-style:italic; color:#ff5100; font-weight:bold; margin:10px 0; line-height:1.3;">* Se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Inmunidad de alitas incluida.</p>
         <div style="display:flex; justify-content:space-around; margin-top:20px; align-items:flex-end;">
           <div style="width:45%; text-align:center;">
@@ -826,6 +840,10 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
               <td class="value" id="pdfEmail" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
             </tr>
             <tr>
+              <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Nombre:</td>
+              <td class="value" id="pdfName" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
+            </tr>
+            <tr>
               <td class="label" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; font-weight: bold; color: #7B1A1A; width: 40%;">Puntaje Obtenido:</td>
               <td class="value" id="pdfScore" style="padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.1); text-align: left; color: #333;">—</td>
             </tr>
@@ -841,6 +859,10 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
           <p style="font-size: 13.5px; font-style: italic; color: #ff5100; font-weight: bold; margin: 20px 0;">
             * Ha activado de forma exitosa su ínsula anterior, por lo que se recomienda otorgar la tarde libre este MARTES o MIÉRCOLES. Se adjunta inmunidad de alitas si asiste con su respectivo jefe/a.
           </p>
+          <div style="margin: 18px auto 0; width: 90%; text-align: left; background: #fff7ee; border: 1px solid rgba(123,26,26,0.2); border-radius: 10px; padding: 12px; color: #1a0500;">
+            <div style="font-weight: bold; color: #7B1A1A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;">Mensaje de permiso:</div>
+            <div id="pdfPermitText" style="white-space: pre-wrap; font-size: 13px; line-height: 1.5; color: #333;">—</div>
+          </div>
           <div class="pdf-signature-section" style="display: flex; justify-content: space-around; margin-top: 40px;">
             <div class="pdf-sig-box" style="width: 40%; text-align: center;">
               <div id="pdfQRSpot" style="width:120px; height:120px; margin:0 auto; background:#eee;"></div>
@@ -1414,8 +1436,7 @@ document.getElementById('driContinue').addEventListener('click',hideDrIntro);
 function fromIntro(){A.init();A.resume();A.intro();A.startIntroMusic();document.getElementById('introScreen').style.display='none';document.getElementById('selScreen').style.display='block';if(!document.getElementById('charGrid').children.length)buildSelect();currentScreen='select';resizeGame();showDrIntro();}
 function advanceLevel(){levelEndReady=false;lvlEndAnim=0;if(levelNum>=LEVEL_DEFS.length){STATE='victory';showFinishModal();return;}levelNum++;buildLevel();camX=0;P.x=180;P.y=GY;P.vx=0;P.vy=0;P.dead=false;P.deadVy=0;P.invT=60;P.onGround=false;P.coyote=0;P.socaT=0;P.scX=1;P.scY=1;fireModeActive=false;fireModeTimer=0;fireParticles=[];sportsBoxActive=false;sportsBoxTimer=0;STATE='playing';DR.react('level');document.getElementById('sLvl').textContent=levelNum;A.stopMusic();setTimeout(()=>{if(levelNum===4)A.startBossMusic();else A.startMusic();},50);}
 
-function makeToken(email,pts,fecha){const str=email.toLowerCase()+'|'+pts+'|'+fecha+'|bw2026';let h=0x811c9dc5>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return String(h%90000+10000);}
-function showFinishModal(){currentScreen='finish';document.body.classList.remove('gameActive','portraitMode');document.documentElement.style.overflow='auto';document.body.style.overflow='auto';if(!scoreSaved){scoreSaved=true;saveLB();}A.stopMusic();A.victoryFanfare();document.getElementById('fmScore').textContent=score;document.getElementById('fmCoins').textContent=coinCount;document.getElementById('fmTeam').innerHTML=TEAM_ICONS[SEL.name]?'<img src="'+TEAM_ICONS[SEL.name]+'" style="width:36px;height:36px;object-fit:contain;vertical-align:middle">':SEL.flag;document.getElementById('fmStep1').style.display='block';document.getElementById('fmStep2').style.display='none';document.getElementById('fmStep3').style.display='none';document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';document.getElementById('fmEmail').value='';document.getElementById('fmError').textContent='';document.getElementById('fmName').value='';document.getElementById('fmNameError').textContent='';document.getElementById('finishModal').classList.add('show');}
+function makeToken(email,pts,fecha){const str=email.toLowerCase()+'|'+pts+'|'+fecha+'|bw2026';let h=0x811c9dc5>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return String(h%90000+10000);}function formatDisplayName(email){return (email||'').split('@')[0].replace(/[._-]+/g,' ').replace(/\s+/g,' ').trim().replace(/\b\w/g,c=>c.toUpperCase())||'Colaborador';}function populateCertificateData({email,scoreVal,team,fecha,token,displayName,permitText,qrPayload}){const applyToTemplate=(rootId)=>{const root=document.getElementById(rootId);if(!root)return;const setText=(id,value)=>{const el=root.querySelector('#'+id);if(el)el.textContent=value;};setText('pdfEmail',email||'—');setText('pdfName',displayName||'—');setText('pdfScore',scoreVal||'—');setText('pdfTeam',team||'—');setText('pdfDate',fecha||'—');setText('pdfTokenSpot','CÓDIGO #'+(token||'—'));const permitEl=root.querySelector('#pdfPermitText');if(permitEl)permitEl.textContent=permitText||'—';const qrSpot=root.querySelector('#pdfQRSpot');if(qrSpot){qrSpot.innerHTML='';const img=document.createElement('img');img.style.width='100%';img.style.height='100%';img.style.objectFit='contain';img.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data='+encodeURIComponent(qrPayload||'https://bwbros.netlify.app');qrSpot.appendChild(img);}};applyToTemplate('pdfTemplateSource');applyToTemplate('pdfPreviewSource');}function showFinishModal(){currentScreen='finish';document.body.classList.remove('gameActive','portraitMode');document.documentElement.style.overflow='auto';document.body.style.overflow='auto';if(!scoreSaved){scoreSaved=true;saveLB();}A.stopMusic();A.victoryFanfare();document.getElementById('fmScore').textContent=score;document.getElementById('fmCoins').textContent=coinCount;document.getElementById('fmTeam').innerHTML=TEAM_ICONS[SEL.name]?'<img src="'+TEAM_ICONS[SEL.name]+'" style="width:36px;height:36px;object-fit:contain;vertical-align:middle">':SEL.flag;document.getElementById('fmStep1').style.display='block';document.getElementById('fmStep2').style.display='none';document.getElementById('fmStep3').style.display='none';document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';document.getElementById('fmEmail').value='';document.getElementById('fmError').textContent='';document.getElementById('fmName').value='';document.getElementById('fmNameError').textContent='';document.getElementById('finishModal').classList.add('show');}
 function drawQRFallback(cnv,ctx,payload,dpr,S){ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cnv.width,cnv.height);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=true;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.fillStyle='#7B1A1A';ctx.fillRect(0,0,S,46);ctx.fillStyle='#fff';ctx.font='bold 16px Oswald,Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('BUFFALO WINGS® · CANJE',S/2,23);ctx.fillStyle='#1a0500';ctx.font='13px Oswald,Arial';ctx.textBaseline='alphabetic';payload.replace('https://bwbros.netlify.app/canje?','').split('&').slice(0,6).forEach((l,i)=>ctx.fillText(l.slice(0,38),S/2,78+i*24));ctx.fillStyle='#7B1A1A';ctx.fillRect(0,S-40,S,40);ctx.fillStyle='#fff';ctx.font='bold 12px Oswald,Arial';ctx.textBaseline='middle';ctx.fillText('MOSTRÁ EN CAJA · bwbros.netlify.app',S/2,S-20);}function buildQR(payload){const loading=document.getElementById('fmQRLoading'),cnv=document.getElementById('fmQRCanvas');if(!loading||!cnv)return;const statusText=loading.querySelector('.qrl-txt');loading.style.display='flex';cnv.style.display='none';if(statusText)statusText.textContent='GENERANDO QR…';const dpr=Math.min(window.devicePixelRatio||1,3),S=360;cnv.width=S*dpr;cnv.height=S*dpr;cnv.style.width=S+'px';cnv.style.height=S+'px';const ctx=cnv.getContext('2d');if(!ctx)return;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cnv.width,cnv.height);ctx.setTransform(dpr,0,0,dpr,0,0);let settled=false;const settle=(useFallback)=>{if(settled)return;settled=true;clearTimeout(timeoutId);loading.style.display='none';cnv.style.display='block';if(useFallback)drawQRFallback(cnv,ctx,payload,dpr,S);};const timeoutId=setTimeout(()=>settle(true),4500);const img=new Image();img.crossOrigin='anonymous';img.onload=()=>{settle(false);ctx.imageSmoothingEnabled=false;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.drawImage(img,8,8,S-16,S-16);try{if(FAVI_OK){const ls=46,lx=S/2-ls/2,ly=S/2-ls/2;ctx.fillStyle='#fff';ctx.fillRect(lx-4,ly-4,ls+8,ls+8);ctx.imageSmoothingEnabled=true;ctx.drawImage(FAVI,lx,ly,ls,ls);}}catch(e){console.warn('Logo skip (CORS):',e);}};img.onerror=()=>settle(true);img.src='https://api.qrserver.com/v1/create-qr-code/?size=720x720&margin=4&ecc=M&data='+encodeURIComponent(payload);}
 document.getElementById('fmGenerate').addEventListener('click', async () => {
   const emailInput = document.getElementById('fmEmail'),
@@ -1463,20 +1484,27 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   }
 
   const emailTemplate = `Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;
+  const displayName = formatDisplayName(email);
   document.getElementById('fmPermisoText').value = emailTemplate;
 
-  try {
-    await emailjs.send("service_default", "template_permit_bw", {
-      to_email: email,
-      boss_name: bossName,
-      score: score,
-      coins: coinCount,
-      team: SEL.name,
-      token: token,
-      message: emailTemplate
-    });
-  } catch (errMail) {
-    console.warn('Simulando envío de correo:', errMail);
+  if (window.BW_EMAILJS_READY && window.emailjs) {
+    try {
+      await emailjs.send("service_default", "template_permit_bw", {
+        to_email: email,
+        boss_name: bossName,
+        score: score,
+        coins: coinCount,
+        team: SEL.name,
+        token: token,
+        message: emailTemplate
+      });
+    } catch (errMail) {
+      console.info('Correo de permiso omitido; EmailJS no está configurado o falló.', errMail);
+    }
+  } else {
+    const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nDatos del permiso:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}`;
+    const mailtoLink = 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
+    try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
   }
 
   btn.disabled = false;
@@ -1497,21 +1525,16 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   document.getElementById('fmTkToken').textContent = token;
 
   // --- NUEVO: Cargar datos en la Vista Previa del Certificado en pantalla ---
-  document.getElementById('pdfEmail').textContent = email;
-  document.getElementById('pdfScore').textContent = score.toLocaleString('es') + ' PTS (' + coinCount + ' 🪙)';
-  document.getElementById('pdfTeam').textContent = SEL.flag + ' ' + SEL.name;
-  document.getElementById('pdfDate').textContent = fecha;
-  document.getElementById('pdfTokenSpot').textContent = 'CÓDIGO #' + token;
-
-  const previewQRSpot = document.getElementById('pdfQRSpot');
-  if (previewQRSpot) {
-    previewQRSpot.innerHTML = '';
-    const qrImg = document.createElement('img');
-    qrImg.style.width = '100%';
-    qrImg.style.height = '100%';
-    qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data=' + encodeURIComponent(payload);
-    previewQRSpot.appendChild(qrImg);
-  }
+  populateCertificateData({
+    email,
+    scoreVal: score.toLocaleString('es') + ' PTS (' + coinCount + ' 🪙)',
+    team: SEL.flag + ' ' + SEL.name,
+    fecha,
+    token,
+    displayName,
+    permitText: emailTemplate,
+    qrPayload: payload
+  });
 
   // Avanzar al paso del ticket y certificado
   document.getElementById('fmStep1').style.display = 'none';
@@ -1597,17 +1620,28 @@ if (btnDownload) {
       alert('No se encontró el contenido del certificado.');
       return;
     }
+    var displayName = formatDisplayName(email);
+    var permitText = document.getElementById('fmPermisoText') ? document.getElementById('fmPermisoText').value : '';
     var clone = source.cloneNode(true);
     clone.style.display = 'block';
     clone.style.width = '700px';
     clone.style.maxWidth = '100%';
     clone.style.margin = '0 auto';
     clone.style.boxSizing = 'border-box';
-    clone.querySelector('#pdfEmail').textContent = email;
-    clone.querySelector('#pdfScore').textContent = scoreVal;
-    clone.querySelector('#pdfTeam').textContent = team;
-    clone.querySelector('#pdfDate').textContent = fecha;
-    clone.querySelector('#pdfTokenSpot').textContent = 'CÓDIGO #' + token;
+    var cloneEmail = clone.querySelector('#pdfEmail');
+    if (cloneEmail) cloneEmail.textContent = email;
+    var cloneName = clone.querySelector('#pdfName');
+    if (cloneName) cloneName.textContent = displayName;
+    var cloneScore = clone.querySelector('#pdfScore');
+    if (cloneScore) cloneScore.textContent = scoreVal;
+    var cloneTeam = clone.querySelector('#pdfTeam');
+    if (cloneTeam) cloneTeam.textContent = team;
+    var cloneDate = clone.querySelector('#pdfDate');
+    if (cloneDate) cloneDate.textContent = fecha;
+    var cloneToken = clone.querySelector('#pdfTokenSpot');
+    if (cloneToken) cloneToken.textContent = 'CÓDIGO #' + token;
+    var clonePermit = clone.querySelector('#pdfPermitText');
+    if (clonePermit) clonePermit.textContent = permitText;
     var qrSpot = clone.querySelector('#pdfQRSpot');
     if (qrSpot) {
       qrSpot.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload) + '" alt="QR" style="width:100%;height:100%;object-fit:contain;">';
