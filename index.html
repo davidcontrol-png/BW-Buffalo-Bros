@@ -670,6 +670,21 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
 
 <script>
 'use strict';
+(function(){
+  const _origGetById = document.getElementById.bind(document);
+  const _dummy = {
+    addEventListener:function(){}, removeEventListener:function(){},
+    style:{}, classList:{add:function(){},remove:function(){},contains:function(){return false;},toggle:function(){}},
+    textContent:'', innerHTML:'', value:'', disabled:false,
+    appendChild:function(){}, insertAdjacentHTML:function(){}, focus:function(){}, select:function(){},
+    getContext:function(){return {scale:function(){},clearRect:function(){},fillRect:function(){},save:function(){},restore:function(){},beginPath:function(){},arc:function(){},fill:function(){},stroke:function(){},roundRect:function(){},drawImage:function(){},createLinearGradient:function(){return{addColorStop:function(){}};},createRadialGradient:function(){return{addColorStop:function(){}};},setTransform:function(){},moveTo:function(){},lineTo:function(){},closePath:function(){},ellipse:function(){},measureText:function(){return{width:0};},fillText:function(){},strokeText:function(){}};},
+    scrollTo:function(){}, click:function(){}, querySelectorAll:function(){return [];}
+  };
+  document.getElementById = function(id){
+    const el = _origGetById(id);
+    return el ? el : _dummy;
+  };
+})();
 if(!CanvasRenderingContext2D.prototype.roundRect){CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.quadraticCurveTo(x+w,y,x+w,y+r);this.lineTo(x+w,y+h-r);this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);this.lineTo(x+r,y+h);this.quadraticCurveTo(x,y+h,x,y+h-r);this.lineTo(x,y+r);this.quadraticCurveTo(x,y,x+r,y);this.closePath();};}
 function shade(hex,a){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');let r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);r=Math.max(0,Math.min(255,r+a));g=Math.max(0,Math.min(255,g+a));b=Math.max(0,Math.min(255,b+a));return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 
