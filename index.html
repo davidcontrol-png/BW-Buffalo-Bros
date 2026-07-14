@@ -371,6 +371,184 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
 .ro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,7vw,38px);color:#FF6B00;letter-spacing:4px;margin-bottom:12px;text-shadow:0 0 24px rgba(255,107,0,.6)}
 .ro-text{color:rgba(255,255,255,.85);font-size:clamp(13px,3.5vw,16px);line-height:1.6;max-width:340px;letter-spacing:1px}
 .ro-dismiss{margin-top:24px;padding:12px 28px;background:rgba(255,107,0,.15);border:2px solid rgba(255,107,0,.5);color:#FF6B00;font-family:Oswald;font-size:13px;letter-spacing:2px;border-radius:9px;cursor:pointer}
+/* === MEJORAS FINALES DEL MODAL === */
+
+/* Banner rojo del inicio con texto blanco */
+.semis-banner > h3, .semis-banner > p {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,1) !important;
+}
+
+/* Modo botones (QR / RANKING) mejorados */
+.fm-mode-row {
+  display: flex !important;
+  gap: 10px !important;
+  margin-bottom: 16px !important;
+}
+.fm-mode-btn {
+  flex: 1 !important;
+  padding: 14px 8px !important;
+  border: 2px solid rgba(255,107,0,.3) !important;
+  border-radius: 10px !important;
+  background: rgba(255,107,0,.06) !important;
+  color: rgba(255,255,255,.65) !important;
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 17px !important;
+  letter-spacing: 1.5px !important;
+  cursor: pointer !important;
+  transition: all .18s !important;
+  text-align: center !important;
+}
+.fm-mode-btn:hover {
+  background: rgba(255,107,0,.12) !important;
+  border-color: rgba(255,107,0,.5) !important;
+  color: rgba(255,255,255,.85) !important;
+}
+.fm-mode-btn.active {
+  background: rgba(255,107,0,.22) !important;
+  border-color: #FF6B00 !important;
+  color: #fff !important;
+  box-shadow: 0 0 16px rgba(255,107,0,.35) !important;
+}
+
+/* Inputs de correo y jefe */
+#fmEmail, #fmBossName, #fmName {
+  width: 100% !important;
+  padding: 14px 14px !important;
+  border-radius: 10px !important;
+  border: 2px solid rgba(255,107,0,.4) !important;
+  background: rgba(0,0,0,.55) !important;
+  color: #fff !important;
+  font-family: 'Oswald', sans-serif !important;
+  font-size: 15px !important;
+  outline: none !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  transition: border-color .2s, box-shadow .2s !important;
+}
+#fmEmail::placeholder,
+#fmBossName::placeholder,
+#fmName::placeholder {
+  color: rgba(255,255,255,0.35) !important;
+}
+#fmEmail:focus, #fmBossName:focus, #fmName:focus {
+  border-color: #FF6B00 !important;
+  box-shadow: 0 0 14px rgba(255,107,0,.35) !important;
+}
+
+/* Botones grandes de generar */
+#fmGenerate {
+  width: 100% !important;
+  margin-top: 14px !important;
+  padding: 16px 0 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #FF6B00, #c84d00) !important;
+  color: #fff !important;
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 24px !important;
+  letter-spacing: 3px !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(255,107,0,.45) !important;
+  display: block !important;
+  transition: transform .1s, box-shadow .2s !important;
+}
+#fmGenerate:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(255,107,0,.6) !important;
+}
+#fmGenerate:active {
+  transform: translateY(0) !important;
+}
+#fmRegisterName {
+  width: 100% !important;
+  margin-top: 14px !important;
+  padding: 16px 0 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #f1c40f, #e67e22) !important;
+  color: #1a0500 !important;
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 24px !important;
+  letter-spacing: 3px !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(241,196,15,.4) !important;
+  display: block !important;
+}
+
+/* Labels de instrucciones */
+#fmQRMode label, #fmRankMode label {
+  color: rgba(255,255,255,.9) !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  display: block !important;
+  margin-bottom: 12px !important;
+}
+
+/* Mensajes de error */
+#fmError, #fmNameError {
+  color: #ff7a5c !important;
+  font-size: 12px !important;
+  min-height: 14px !important;
+  margin: 6px 0 !important;
+  display: block !important;
+}
+
+/* Ticket generado - colores oscuros sobre fondo claro */
+.fm-ticket { background: #fff !important; }
+.fmt-head-text .fht1 { color: #fff !important; }
+.fmt-head-text .fht2 { color: rgba(255,200,100,.85) !important; }
+.fmt-scan-label { color: rgba(123,26,26,.8) !important; }
+.fmt-data { background: #fdf5ee !important; }
+.fmt-data-title { color: rgba(123,26,26,.55) !important; }
+.fmt-lbl { color: rgba(80,20,10,.7) !important; }
+.fmt-val { color: #2a0606 !important; }
+.fmt-val.pts { color: #c84d00 !important; }
+.fmt-val.coins { color: #b8860b !important; }
+.fmt-token .tk-badge { color: #fff !important; background: #7B1A1A !important; }
+.fmt-token .tk-label { color: rgba(123,26,26,.55) !important; }
+.fmt-foot-left { color: #fff !important; }
+.fmt-foot-right { color: rgba(255,200,100,.7) !important; }
+
+/* Sección permiso dentro del ticket */
+.fmt-permiso-seccion { background: #fdf5ee !important; }
+.fmt-permiso-seccion h4 { color: #7B1A1A !important; }
+.fmt-textarea {
+  color: #2a0606 !important;
+  background: #fff !important;
+  border: 1.5px solid rgba(123,26,26,.25) !important;
+}
+.fmt-textarea:focus { border-color: #FF6B00 !important; }
+.fmt-btn-copy {
+  background: #7B1A1A !important;
+  color: #fff !important;
+}
+.fmt-btn-copy:hover { background: #a02020 !important; }
+.fmt-btn-download {
+  background: linear-gradient(135deg, #FF6B00, #c84d00) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(255,107,0,.4) !important;
+}
+.fmt-btn-download:hover {
+  box-shadow: 0 6px 18px rgba(255,107,0,.55) !important;
+}
+
+/* Botón Jugar de Nuevo */
+#fmRestart, #fmRestartRank {
+  width: 100% !important;
+  padding: 16px 0 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #FF6B00, #c84d00) !important;
+  color: #fff !important;
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 22px !important;
+  letter-spacing: 3px !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 16px rgba(255,107,0,.4) !important;
+  margin-top: 10px !important;
+}
 </style>
 </head>
 <body>
