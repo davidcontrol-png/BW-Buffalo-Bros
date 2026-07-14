@@ -1288,16 +1288,9 @@ btnDownload.addEventListener('click', () => {
   const fecha = document.getElementById('pdfDate').textContent || new Date().toISOString().slice(0,10);
   const token = document.getElementById('fmTkToken').textContent || 'BW';
   const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-
   const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
-  if (!win) {
-    alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.');
-    return;
-  }
-  win.document.write(`<!DOCTYPE html>
-document.getElementById('fmRestart').addEventListener('click',()=>{document.getElementById('finishModal').classList.remove('show');goToSelect();});
-
-document.getElementById('fmModeQR').addEventListener('click',()=>{document.getElementById('fmModeQR').classList.add('active');document.getElementById('fmModeRank').classList.remove('active');document.getElementById('fmQRMode').style.display='block';document.getElementById('fmRankMode').style.display='none';});
+  if (!win) { alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.'); return; }
+  win.document.write(
 document.getElementById('fmModeRank').addEventListener('click',()=>{document.getElementById('fmModeRank').classList.add('active');document.getElementById('fmModeQR').classList.remove('active');document.getElementById('fmRankMode').style.display='block';document.getElementById('fmQRMode').style.display='none';});
 
 document.getElementById('fmRegisterName').addEventListener('click',async()=>{
