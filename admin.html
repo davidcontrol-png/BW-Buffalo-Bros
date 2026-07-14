@@ -171,6 +171,13 @@ function showPanel(){
   renderTable();
 }
 
+function normalizeMode(r){
+  const raw=(r.mode||'').toString().trim().toLowerCase();
+  if(raw.includes('qr')||raw.includes('permiso')||raw.includes('canje')) return 'qr';
+  if(raw.includes('rank')||raw.includes('ranking')) return 'rank';
+  return r.email ? 'qr' : 'rank';
+}
+
 function renderTable(){
   const esc=s=>(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
   const fT=$('fTeam').value, fG=$('fGender').value, fR=$('fRedeem').value, fM=$('fMode').value, fS=$('fSearch').value.toLowerCase().trim();
@@ -179,7 +186,7 @@ function renderTable(){
   if(fG) recs=recs.filter(r=>(r.gender||'M')===fG);
   if(fR==='si') recs=recs.filter(r=>r.redeemed);
   else if(fR==='no') recs=recs.filter(r=>!r.redeemed);
-  if(fM) recs=recs.filter(r=>(r.mode||(r.email?'qr':'rank'))===fM);
+  if(fM) recs=recs.filter(r=>normalizeMode(r)===fM);
   if(fS) recs=recs.filter(r=>(r.name||'').toLowerCase().includes(fS)||(r.email||'').toLowerCase().includes(fS));
   if(!recs.length){ $('tablewrap').innerHTML='<div class="empty">Sin resultados 🦬</div>'; return; }
   let html='<table><thead><tr><th>Fecha</th><th>Apodo</th><th>♀♂</th><th>Equipo</th><th>Email</th><th>Pts</th><th>🪙</th><th>⚽🟥🥅🤝</th><th>Modo</th><th>Canjeado</th><th>Acciones</th></tr></thead><tbody>';
@@ -187,7 +194,7 @@ function renderTable(){
     const e=r.events||{}, g=r.gender||'M';
 const teamLogoUrl = TEAM_F[r.team] || '';
 const tf = teamLogoUrl ? '<img src="' + teamLogoUrl + '" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;margin-right:6px;">' : '';
-    const mode=r.mode||(r.email?'qr':'rank');
+    const mode=normalizeMode(r);
     html+='<tr><td>'+esc((r.date||'').slice(0,10))+'</td><td><b>'+esc(r.name||'—')+'</b></td><td><span class="g-'+(g==='F'?'f':'m')+'">'+(g==='F'?'♀':'♂')+'</span></td><td><div style="display:flex;align-items:center;">'+tf+'<span>'+esc(r.team||'')+'</span></div></td><td style="font-size:11.5px;color:rgba(255,255,255,.7)">'+esc(r.email||'—')+'</td><td><b style="color:#FF6B00">'+(+r.score||0).toLocaleString('es')+'</b></td><td>'+(r.coins||0)+'</td><td style="font-size:11.5px">⚽'+(e.poste||0)+' 🟥'+(e.roja||0)+' 🥅'+(e.penal||0)+' 🤝'+(e.empate||0)+'</td><td><span class="tag '+(mode==='qr'?'qr':'rk')+'">'+(mode==='qr'?'📷 QR':'🏆 RANK')+'</span></td><td>'+(r.redeemed?'<span class="tag si">SÍ</span>':(r.email?'<span class="tag no">NO</span>':'<span class="tag no">—</span>'))+'</td><td class="act">'+(r.email&&!r.redeemed?'<button class="b-redeem" data-redeem="'+r.id+'">✅</button>':'')+'<button class="b-del" data-del="'+r.id+'">🗑️</button></td></tr>';
   });
   html+='</tbody></table>';

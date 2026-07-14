@@ -1473,7 +1473,7 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
         team: SEL.name,
         gender: SEL_GENDER || 'M',
         events: eventStats,
-        mode: 'qr_permiso',
+        mode: 'qr',
         boss: bossName,
         token
       })
@@ -1486,7 +1486,6 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
   const emailTemplate = `Hola ${bossName}.\n\nUsted sabe que siempre soy team player: me quedo hasta en tiempo extra y siempre me pongo la camiseta.\n\nEste martes y miércoles se juegan las semifinales y necesito permiso de ponerme la de mi selección favorita. Voy de titular con los Bros a ver el partido en Buffalo Wings. Prometo no quedarme en la banca de la oficina y regresar con toda la energía.\n\nDe antemano, muchas gracias.`;
   const displayName = formatDisplayName(email);
   const certViewUrl = 'https://bwbros.netlify.app/canje?token=' + encodeURIComponent(token) + '&email=' + encodeURIComponent(email) + '&preview=1';
-  const certImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=2&ecc=M&data=' + encodeURIComponent(certViewUrl);
   document.getElementById('fmPermisoText').value = emailTemplate;
 
   const payload = 'https://bwbros.netlify.app/canje?id=' + encodeURIComponent(recId) + '&e=' + encodeURIComponent(email) + '&p=' + score + '&m=' + coinCount + '&ev=' + evStr + '&eq=' + encodeURIComponent(SEL.name) + '&f=' + fecha + '&t=' + token;
@@ -1534,11 +1533,10 @@ document.getElementById('fmGenerate').addEventListener('click', async () => {
           team: SEL.name,
           token: token,
           message: emailTemplate,
-          certificate_url: certViewUrl,
-          certificate_image_url: certImageUrl
+          certificate_url: certViewUrl
         });
       } else {
-        const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nImagen del certificado: ${certImageUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
+        const mailtoBody = `Hola ${bossName},\n\n${emailTemplate}\n\nCERTIFICADO BUFFALO BROS:\n- Correo: ${email}\n- Nombre: ${displayName}\n- Equipo: ${SEL.name}\n- Puntaje: ${score}\n- Monedas: ${coinCount}\n- Token: ${token}\n\nVista del certificado: ${certViewUrl}\n\nEl certificado también aparece en pantalla al generar el QR.`;
         const mailtoLink = 'mailto:' + email + '?subject=' + encodeURIComponent('Permiso oficial Buffalo Wings - ' + token) + '&body=' + encodeURIComponent(mailtoBody);
         try { window.open(mailtoLink, '_blank', 'noopener,noreferrer'); } catch (e) { window.location.href = mailtoLink; }
       }
@@ -1593,22 +1591,27 @@ function showCertificatePreview(html){
   }
   var overlay=document.createElement('div');
   overlay.id='certPreviewOverlay';
-  overlay.style.cssText='position:fixed;inset:0;background:rgba(4,0,0,.95);z-index:9000;display:flex;align-items:center;justify-content:center;padding:14px;';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(4,0,0,.96);z-index:99999;display:flex;align-items:center;justify-content:center;padding:10px;';
   var panel=document.createElement('div');
-  panel.style.cssText='width:min(100%,900px);max-height:95vh;overflow:auto;background:#fff;border-radius:16px;padding:12px;box-shadow:0 20px 80px rgba(0,0,0,.45);';
+  panel.style.cssText='width:min(100%,900px);max-width:100%;max-height:95vh;overflow:auto;background:#fff;border-radius:16px;padding:10px;box-shadow:0 20px 80px rgba(0,0,0,.45);';
   var toolbar=document.createElement('div');
-  toolbar.style.cssText='display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px;';
+  toolbar.style.cssText='display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px;flex-wrap:wrap;';
   var closeBtn=document.createElement('button');
   closeBtn.textContent='✖ CERRAR';
-  closeBtn.style.cssText='border:none;border-radius:8px;padding:8px 12px;background:#7B1A1A;color:#fff;cursor:pointer;font-family:Oswald,sans-serif;letter-spacing:1px;';
+  closeBtn.style.cssText='border:none;border-radius:8px;padding:8px 12px;background:#7B1A1A;color:#fff;cursor:pointer;font-family:Oswald,sans-serif;letter-spacing:1px;font-size:14px;';
   var printBtn=document.createElement('button');
-  printBtn.textContent='🖨️ IMPRIMIR';
-  printBtn.style.cssText='border:none;border-radius:8px;padding:8px 12px;background:#FF6B00;color:#fff;cursor:pointer;font-family:Oswald,sans-serif;letter-spacing:1px;';
-  closeBtn.onclick=()=>overlay.remove();
-  printBtn.onclick=()=>window.print();
+  printBtn.textContent='🖨️ ABRIR / IMPRIMIR';
+  printBtn.style.cssText='border:none;border-radius:8px;padding:8px 12px;background:#FF6B00;color:#fff;cursor:pointer;font-family:Oswald,sans-serif;letter-spacing:1px;font-size:14px;';
+  closeBtn.onclick=function(){if(overlay.parentNode)overlay.parentNode.removeChild(overlay);};
+  printBtn.onclick=function(){
+    if(window.navigator && window.navigator.userAgent && /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)){
+      window.open('', '_blank', 'noopener,noreferrer');
+    }
+    window.open('data:text/html;charset=utf-8,' + encodeURIComponent(html), '_blank', 'noopener,noreferrer');
+  };
   toolbar.appendChild(printBtn);toolbar.appendChild(closeBtn);panel.appendChild(toolbar);
   var iframe=document.createElement('iframe');
-  iframe.style.cssText='width:100%;min-height:80vh;border:0;border-radius:10px;background:#fff;';
+  iframe.style.cssText='width:100%;min-height:78vh;border:0;border-radius:10px;background:#fff;';
   panel.appendChild(iframe);
   overlay.appendChild(panel);
   document.body.appendChild(overlay);
@@ -1652,7 +1655,7 @@ function buildCertificateHtml(){
   if (qrSpot) {
     qrSpot.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&ecc=M&data=' + encodeURIComponent(qrPayload) + '" alt="QR" style="width:100%;height:100%;object-fit:contain;">';
   }
-  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><style>@page{size:A4;margin:6mm}body{margin:0;padding:0;background:#fff;font-family:Arial,sans-serif}.wrap{padding:0;display:flex;justify-content:center;align-items:flex-start}.card{background:#fff;box-shadow:none;display:block;width:100%;max-width:700px;margin:0 auto}.pdf-cert-border{padding:16px!important;margin:0!important}.pdf-logo-box{font-size:24px!important;margin-bottom:4px!important}.pdf-title{font-size:28px!important;margin:8px 0 2px 0!important}.pdf-subtitle{font-size:12px!important;margin-bottom:14px!important}p{font-size:12px!important;line-height:1.4!important;margin:10px 0!important}.pdf-data-table{width:94%!important;margin:12px auto!important;font-size:13px!important}.pdf-data-table td{padding:7px!important}.pdf-data-table .label{font-size:12px!important}.pdf-data-table .value{font-size:12px!important}#pdfPermitText{font-size:10px!important;line-height:1.3!important}#pdfQRSpot{width:72px!important;height:72px!important}#pdfTokenSpot{font-size:9px!important}</style></head><body><div class="wrap"><div class="card">' + clone.outerHTML + '</div></div></body></html>';
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Buffalo Bros</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><style>@page{size:A4;margin:6mm}body{margin:0;padding:0;background:#fff;font-family:Arial,sans-serif;-webkit-text-size-adjust:100%}.wrap{padding:0;display:flex;justify-content:center;align-items:flex-start}.card{background:#fff;box-shadow:none;display:block;width:100%;max-width:700px;margin:0 auto}.pdf-cert-border{padding:16px!important;margin:0!important}.pdf-logo-box{font-size:24px!important;margin-bottom:4px!important}.pdf-title{font-size:28px!important;margin:8px 0 2px 0!important}.pdf-subtitle{font-size:12px!important;margin-bottom:14px!important}p{font-size:12px!important;line-height:1.4!important;margin:10px 0!important}.pdf-data-table{width:94%!important;margin:12px auto!important;font-size:13px!important}.pdf-data-table td{padding:7px!important}.pdf-data-table .label{font-size:12px!important}.pdf-data-table .value{font-size:12px!important}#pdfPermitText{font-size:10px!important;line-height:1.3!important}#pdfQRSpot{width:72px!important;height:72px!important}#pdfTokenSpot{font-size:9px!important}@media screen and (max-width:760px){.pdf-logo-box{font-size:20px!important}.pdf-title{font-size:24px!important}.pdf-subtitle{font-size:11px!important}.pdf-data-table{font-size:11px!important}.pdf-data-table .label,.pdf-data-table .value{font-size:11px!important}#pdfPermitText{font-size:9px!important}}</style></head><body><div class="wrap"><div class="card">' + clone.outerHTML + '</div></div></body></html>';
 }
 
 var btnDownloads = document.querySelectorAll('#btnDownloadCert');
@@ -1672,6 +1675,7 @@ btnDownloads.forEach(function(btnDownload) {
       var a = document.createElement('a');
       a.href = url;
       a.download = 'certificado-buffalo-bros.html';
+      a.rel = 'noopener';
       document.body.appendChild(a);
       a.click();
       a.remove();
