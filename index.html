@@ -168,6 +168,13 @@ canvas{display:block;border:2px solid #FF6B00;box-shadow:0 0 40px rgba(255,107,0
   transform: skewX(-20deg);
   animation: scanSweeper 4.5s infinite linear;
 }
+.semis-banner h3, 
+.semis-banner p, 
+.semis-banner h3 *, 
+.semis-banner p * {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,1) !important;
+}
 .semis-banner-title {
   font-family: 'Bebas Neue', sans-serif !important;
   font-size: clamp(17px, 4.6vw, 23px) !important;
@@ -534,7 +541,7 @@ body:has(#rotateOverlay.show) .portraitInfo{display:none !important}
       <button id="fmRestart">🔄 JUGAR DE NUEVO</button>
 
       <!-- Estructura Escondida del Certificado para la Conversión PDF -->
-      <div id="pdfTemplateSource" style="position: absolute; left: -9999px; top: -9999px; width: 700px; background: #fff; color: #1a0500; padding: 40px; font-family: 'Oswald', 'Arial', sans-serif; border: 15px double #7B1A1A;">
+      <div id="pdfTemplateSource" style="display: none; width: 700px; background: #fff; color: #1a0500; padding: 40px; font-family: 'Oswald', 'Arial', sans-serif; border: 15px double #7B1A1A;">
         <div class="pdf-cert-border" style="border: 3px solid #ff7700; padding: 30px; text-align: center;">
           <div class="pdf-logo-box" style="font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #7B1A1A; letter-spacing: 3px; margin-bottom: 5px;">🦬 SOCAZONE BUFFALO BROS</div>
           <div class="pdf-title" style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: #ff5100; letter-spacing: 4px; margin: 15px 0 5px 0; text-transform: uppercase;">PERMISO OFICIAL DE AUSENCIA</div>
@@ -1282,17 +1289,19 @@ if (btnCopy) {
 const btnDownload = document.getElementById('btnDownloadCert');
 if (btnDownload) {
 btnDownload.addEventListener('click', () => {
-const email = document.getElementById('pdfEmail').textContent || '';
-const scoreVal = document.getElementById('pdfScore').textContent || score + ' PTS';
-const team = document.getElementById('pdfTeam').textContent || SEL.flag + ' ' + SEL.name;
-const fecha = document.getElementById('pdfDate').textContent || new Date().toISOString().slice(0,10);
-const token = document.getElementById('fmTkToken').textContent || 'BW';
-const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
-const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
-if (!win) { alert('Tu navegador bloqueo la ventana emergente. Permitila para descargar el certificado.'); return; }
-win.document.write(`
+  const email = document.getElementById('fmTkEmail').textContent || '';
+  const scoreVal = document.getElementById('fmTkPts').textContent || score + ' PTS';
+  const team = document.getElementById('fmTkTeam').textContent || SEL.flag + ' ' + SEL.name;
+  const fecha = document.getElementById('fmTkDate').textContent || new Date().toISOString().slice(0, 10);
+  const token = document.getElementById('fmTkToken').textContent || 'BW';
+  const qrPayload = window._lastQRPayload || 'https://bwbros.netlify.app';
 
-const keys={left:false,right:false,jump:false,run:false};let jumpHeld=false;
+  const win = window.open('', '_blank', 'width=820,height=720,scrollbars=yes');
+  if (!win) {
+    alert('Tu navegador bloqueó la ventana emergente. Permitila para descargar el certificado.');
+    return;
+  }
+  win.document.write(
 document.addEventListener('keydown',e=>{if(STATE==='victory')return;if(document.activeElement&&document.activeElement.tagName==='INPUT')return;if(e.code==='KeyP'){togglePause();return;}if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=true;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=true;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=true;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();keys.jump=true;if(!jumpHeld){jumpHeld=true;if(document.getElementById('introScreen').style.display!=='none'){goFullscreen();fromIntro();return;}if(paused){togglePause();return;}if(STATE==='levelend'){if(levelEndReady)advanceLevel();return;}if(STATE==='over'){resetGame();return;}if(STATE==='rules'){STATE='playing';resetGame();return;}P.tryJump();}}if(e.code==='Escape'){if(document.getElementById('gameWrap').style.display==='block')goToSelect();else if(document.getElementById('selScreen').style.display==='block')goToIntro();}});
 document.addEventListener('keyup',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=false;if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=false;if(e.code==='ShiftLeft'||e.code==='ShiftRight')keys.run=false;if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){keys.jump=false;jumpHeld=false;}});
 let introTransitioning=false;function introTap(){if(introTransitioning)return;introTransitioning=true;goFullscreen();A.init();A.resume();A.intro();A.startIntroMusic();setTimeout(()=>{fromIntro();introTransitioning=false;},650);}document.getElementById('introScreen').addEventListener('click',introTap);
